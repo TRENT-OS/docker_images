@@ -1,12 +1,12 @@
 FROM ubuntu
 MAINTAINER Carmelo carmelo.pintaudi@hensoldt-cyber.com
 
-RUN apt-get update && apt-get upgrade -y
+ARG USER_NAME
+ARG USER_ID
 
-# add the jenkins user with UID 1000
-RUN useradd jenkins
+RUN apt-get update
 
-# install tools
+# install build tools
 RUN apt-get install -y git build-essential cmake ninja-build
 
 # install python venv and pytest
@@ -15,5 +15,10 @@ RUN apt-get install -y python3-venv python3-pytest
 # install qemu and netcat
 RUN apt-get install -y qemu-system-arm netcat
 
+# install unit tests tools
+RUN apt-get install -y lcov libgtest-dev
+RUN cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
 
+# add the user
+RUN useradd -u $USER_ID $USER_NAME
 
