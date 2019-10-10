@@ -1,0 +1,4 @@
+[submodule "dockerfiles/sel4-camkes-l4v-dockerfiles"]
+	path = dockerfiles/sel4-camkes-l4v-dockerfiles
+	url = ssh://git@bitbucket.hensoldt-cyber.systems:7999/ext/sel4-camkes-l4v-dockerfiles.git
+	branch = master
