@@ -28,3 +28,8 @@ RUN apt-get install -y netcat libvdeplug-dev
 # add the user
 RUN useradd -u $USER_ID $USER_NAME
 
+# cleanup
+RUN apt-get clean autoclean \
+    && apt-get autoremove --yes \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}/
+
