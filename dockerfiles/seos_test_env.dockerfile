@@ -26,7 +26,12 @@ RUN cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
 RUN apt-get install -y netcat libvdeplug-dev
 
 # add the user
-RUN useradd -u $USER_ID $USER_NAME
+RUN useradd -u ${USER_ID} ${USER_NAME} -d /home/${USER_NAME} \
+    && mkdir /home/${USER_NAME} \
+    && adduser ${USER_NAME} sudo \
+    && passwd -d ${USER_NAME} \
+    && chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME} \
+    && chmod -R ug+rw /home/${USER_NAME}
 
 # cleanup
 RUN apt-get clean autoclean \
