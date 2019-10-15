@@ -12,10 +12,8 @@ BUILD_SCRIPT_DIR=$(cd `dirname $0` && pwd)
 
 if [[ "${1:-}" == "seos_build_env" ]]; then
     (
-        cd ${BUILD_SCRIPT_DIR}/sel4-camkes-l4v-dockerfiles
-        ./build.sh -b camkes
-        cd ..
-        docker build -t seos_build_env --build-arg USER_NAME=$(whoami) --build-arg USER_ID=$(id -u) - < seos_build_env.dockerfile
+         cd ${BUILD_SCRIPT_DIR}
+         docker build -t seos_build_env --build-arg USER_NAME=$(whoami) --build-arg USER_ID=$(id -u) - < seos_build_env.dockerfile
     )
 elif [[ "${1:-}" == "seos_test_env" ]]; then
     (
