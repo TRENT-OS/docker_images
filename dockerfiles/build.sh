@@ -16,16 +16,12 @@ function create_docker_image()
 {
     local IMAGE=$1
 
-    (
-        cd ${BUILD_SCRIPT_DIR}
-
-        docker build \
-            -t ${IMAGE} \
-            --build-arg USER_NAME=$(whoami) \
-            --build-arg USER_ID=$(id -u) \
-            - \
-            < ${IMAGE}.dockerfile
-    )
+    docker build \
+        -t ${IMAGE} \
+        --build-arg USER_NAME=$(whoami) \
+        --build-arg USER_ID=$(id -u) \
+        - \
+        < ${BUILD_SCRIPT_DIR}/${IMAGE}.dockerfile
 }
 
 
