@@ -9,19 +9,26 @@
 #-------------------------------------------------------------------------------
 
 BUILD_SCRIPT_DIR=$(cd `dirname $0` && pwd)
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
 
 #-------------------------------------------------------------------------------
 function create_docker_image()
 {
-    local IMAGE=$1
+    local IMAGE_BASE=$1
 
+    local IMAGE_ID=${IMAGE_BASE}:${TIMESTAMP}
+    echo "building ${IMAGE_ID} ..."
     docker build \
-        -t ${IMAGE} \
+        -t ${IMAGE_ID} \
         --build-arg USER_NAME=$(whoami) \
         --build-arg USER_ID=$(id -u) \
         - \
-        < ${BUILD_SCRIPT_DIR}/${IMAGE}.dockerfile
+        < ${BUILD_SCRIPT_DIR}/${IMAGE_BASE}.dockerfile
+
+    local IMAGE_ARCHIVE=${IMAGE_BASE}-${TIMESTAMP}.tar.bz2
+    echo "saving image to ${IMAGE_ARCHIVE} ..."
+    docker save ${IMAGE_ID} | pv | bzip2 > ${IMAGE_ARCHIVE}
 }
 
 
