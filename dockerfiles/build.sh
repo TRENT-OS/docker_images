@@ -10,16 +10,49 @@
 
 BUILD_SCRIPT_DIR=$(cd `dirname $0` && pwd)
 
-if [[ "${1:-}" == "seos_build_env" ]]; then
-    (
-         cd ${BUILD_SCRIPT_DIR}
-         docker build -t seos_build_env --build-arg USER_NAME=$(whoami) --build-arg USER_ID=$(id -u) - < seos_build_env.dockerfile
-    )
-elif [[ "${1:-}" == "seos_test_env" ]]; then
+
+#-------------------------------------------------------------------------------
+function create_docker_image()
+{
+    local IMAGE=$1
+
     (
         cd ${BUILD_SCRIPT_DIR}
-        docker build -t seos_test_env --build-arg USER_NAME=$(whoami) --build-arg USER_ID=$(id -u) - < seos_test_env.dockerfile
+
+        docker build \
+            -t ${IMAGE} \
+            --build-arg USER_NAME=$(whoami) \
+            --build-arg USER_ID=$(id -u) \
+            - \
+            < ${IMAGE}.dockerfile
     )
+}
+
+
+#-------------------------------------------------------------------------------
+function create_seos_build_env()
+{
+    create_docker_image seos_build_env
+}
+
+
+#-------------------------------------------------------------------------------
+function create_seos_test_env()
+{
+    create_docker_image seos_test_env
+}
+
+
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+
+if [[ "${1:-}" == "seos_build_env" ]]; then
+    create_seos_build_env
+
+elif [[ "${1:-}" == "seos_test_env" ]]; then
+    create_seos_test_env
+
 else
     echo -e "build.sh <target> \
     \n\npossible targets are:\
