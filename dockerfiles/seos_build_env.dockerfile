@@ -1,4 +1,4 @@
-FROM trustworthysystems/camkes
+FROM trustworthysystems/camkes-riscv
 MAINTAINER Carmelo carmelo.pintaudi@hensoldt-cyber.com
 
 ARG USER_NAME
