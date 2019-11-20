@@ -121,7 +121,7 @@ function branch()
             echo_yellow "'$2' not such a branch exists to branch from. Skipping."
             get_confirmation || return 1
         else
-            checkout $2 && checkout -b $1
+            checkout_and_pull $2 && checkout -b $1
         fi
     else
         echo_green "branch already exists"
@@ -272,8 +272,6 @@ function checkout()
     if ! git checkout $@ 1>>$GIT_OUTPUT_FILE 2>>$GIT_OUTPUT_FILE; then
         echo_yellow "checkout with '$@' failed. Skipping."
         get_confirmation || return 1
-    else
-        pull
     fi
 }
 
@@ -281,6 +279,19 @@ function checkout()
 function checkout_all()
 {
     for_all checkout $@
+}
+
+#-------------------------------------------------------------------------------
+function checkout_and_pull()
+{
+    checkout $@
+    pull
+}
+
+#-------------------------------------------------------------------------------
+function checkout_and_pull_all()
+{
+    for_all checkout_and_pull $@
 }
 
 #-------------------------------------------------------------------------------
@@ -307,7 +318,7 @@ function checkout_all_and_update_target()
         done;
 
         if ! $skip; then
-            checkout $1 >/dev/null || return 1
+            checkout_and_pull $1 >/dev/null || return 1
             echo_lgray "adding $module to target modules"
             if get_confirmation ; then
                 TARGET_MODULES+=$module$'\n'
@@ -344,7 +355,7 @@ function pull_all()
 #-------------------------------------------------------------------------------
 function merge()
 {
-    checkout -f $2
+    checkout_and_pull -f $2
     git merge ${@:2} $1 1>>$GIT_OUTPUT_FILE 2>>$GIT_OUTPUT_FILE ||
         { echo_red "failed merging branch '$1'"; return 1; }
 }
@@ -359,7 +370,7 @@ function merge_all()
 function reset_layout()
 {
     echo_lgray "resetting the layout to '$1' branch"
-    checkout $1 &&
+    checkout_and_pull $1 &&
         git submodule update --init --recursive 1>>$GIT_OUTPUT_FILE 2>>$GIT_OUTPUT_FILE &&
         get_submodules &&
         show_submodules &&
