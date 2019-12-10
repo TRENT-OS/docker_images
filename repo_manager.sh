@@ -318,7 +318,7 @@ function checkout_all_and_update_target()
         done;
 
         if ! $skip; then
-            checkout_and_pull $1 >/dev/null || return 1
+            checkout $1 >/dev/null || return 1
             echo_lgray "adding $module to target modules"
             if get_confirmation ; then
                 TARGET_MODULES+=$module$'\n'
@@ -418,6 +418,7 @@ function exec_push()
 function exec_rebase()
 {
     checkout_all_and_update_target $@ &&
+        pull_all &&
         rebase_all $2
 }
 
@@ -447,6 +448,8 @@ function exec_merge()
 
     #### Identify which submodules are good candidates and checkout the target branch
     checkout_all_and_update_target $SRC_BRANCH $DST_BRANCH
+
+    pull_all
 
     #### Take care that they are all in sync with origin
     echo
