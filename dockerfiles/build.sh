@@ -9,26 +9,32 @@
 #-------------------------------------------------------------------------------
 
 BUILD_SCRIPT_DIR=$(cd `dirname $0` && pwd)
+#USER_NAME=$(whoami)
+USER_NAME=user
+USER_ID=$(id -u)
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-
-
+REGISTRY="docker:5000"
 #-------------------------------------------------------------------------------
 function create_docker_image()
 {
     local IMAGE_BASE=$1
 
     local IMAGE_ID=${IMAGE_BASE}:${TIMESTAMP}
-    echo "building ${IMAGE_ID} ..."
+    echo "Building ${IMAGE_ID} ..."
     docker build \
         -t ${IMAGE_ID} \
-        --build-arg USER_NAME=$(whoami) \
-        --build-arg USER_ID=$(id -u) \
-        - \
-        < ${BUILD_SCRIPT_DIR}/${IMAGE_BASE}.dockerfile
+        --build-arg USER_NAME=${USER_NAME} \
+        --build-arg USER_ID=${USER_ID} \
+        -f ${BUILD_SCRIPT_DIR}/${IMAGE_BASE}.dockerfile scripts/
 
-    local IMAGE_ARCHIVE=${IMAGE_BASE}-${TIMESTAMP}.tar.bz2
-    echo "saving image to ${IMAGE_ARCHIVE} ..."
-    docker save ${IMAGE_ID} | pv | bzip2 > ${IMAGE_ARCHIVE}
+    echo "Saving image to ${IMAGE_ID} ..."
+    docker tag ${IMAGE_ID} ${REGISTRY}/${IMAGE_BASE}:latest
+    docker tag ${IMAGE_ID} ${REGISTRY}/${IMAGE_ID}
+    #echo "Pushing image to ${REGISTRY}/${IMAGE_ID}"
+    #docker push "${REGISTRY}/${IMAGE_ID}"
+    #docker push "${REGISTRY}/${IMAGE_BASE}:latest"
+    #echo "saving image to ${IMAGE_ARCHIVE} ..."
+    #docker save ${IMAGE_ID} | pv | bzip2 > ${IMAGE_ARCHIVE}
 }
 
 
