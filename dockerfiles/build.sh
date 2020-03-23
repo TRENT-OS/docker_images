@@ -57,13 +57,13 @@ function create_seos_test_env()
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 
-if [[ "${1:-}" == "seos_build_env" ]]; then
+if [[ "${1:-}" == "seos_build_env.dockerfile" ]]; then
     create_seos_build_env
 
-elif [[ "${1:-}" == "seos_debug_env" ]]; then
+elif [[ "${1:-}" == "seos_debug_env.dockerfile" ]]; then
     create_seos_debug_env
 
-elif [[ "${1:-}" == "seos_test_env" ]]; then
+elif [[ "${1:-}" == "seos_test_env.dockerfile" ]]; then
     create_seos_test_env
 
 elif [[ "${1:-}" == "all" ]]; then
@@ -74,9 +74,9 @@ elif [[ "${1:-}" == "all" ]]; then
 else
     echo -e "build.sh <target> \
     \n\npossible targets are:\
-    \n\t seos_build_env\
-    \n\t seos_debug_env\
-    \n\t seos_test_env\
+    \n\t seos_build_env.dockerfile\
+    \n\t seos_debug_env.dockerfile\
+    \n\t seos_test_env.dockerfile\
     \n\t all\
     "
 fi
