@@ -1,4 +1,6 @@
-#!/bin/bash -euxo pipefail
+#!/bin/bash 
+
+set -euxo pipefail
 
 USER_ID="$1"
 USER_NAME="$2"
