@@ -28,6 +28,8 @@ apt-get install --no-install-recommends -y astyle cppcheck clang-tidy doxygen gr
 
 apt-get install --no-install-recommends -y git build-essential cmake ninja-build nano
 
+apt-get install --no-install-recommends -y libxml2-dev libxml2
+
 # install unit tests tools
 apt-get install --no-install-recommends -y lcov libgtest-dev
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
