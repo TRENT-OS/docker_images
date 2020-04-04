@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 set -euxo pipefail
 
@@ -27,14 +27,14 @@ ln -s /root/.stack
 apt-get update
 
 PACKAGES=(
-	astyle cppcheck clang-tidy doxygen graphviz sudo
-
-	git build-essential cmake ninja-build nano
-
-	libxml2-dev libxml2
-
-	# install unit tests tools
-	lcov libgtest-dev
+    rsync coreutils
+    git build-essential cmake ninja-build
+    astyle clang-tidy
+    doxygen graphviz
+    # unit tests tools
+    cppcheck check lcov libgtest-dev
+    # XML processing
+    libxml2-dev libxml2
 )
 
 apt-get install --no-install-recommends -y ${PACKAGES[@]}

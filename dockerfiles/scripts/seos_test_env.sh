@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 set -euxo pipefail
 
@@ -16,39 +16,21 @@ chmod -R ug+rw /home/${USER_NAME}
 apt-get update
 
 PACKAGES=(
-	# install build tools
-	git build-essential cmake ninja-build sudo nano
-
-	# install tools
-	rsync coreutils
-
-	# install python venv and pytest
-	python3-venv python3-pytest python3-pip
-
-	# install qemu
-	qemu-system-arm
-
-	# install unit tests tools
-	lcov libgtest-dev
-
-	# install dependecies for the tools
-	netcat libvdeplug-dev
-
-	# install tools to create internal network
-	iptables
-
-	# install tools to debug internal network
-	iputils-ping traceroute
-
-	# entrypoint is used to config the network and revert back to normal user
-	gosu
-
-	psmisc
-
-	vde2 libvdeplug2-dev libpcap0.8-dev openvpn check
-
-	#install scapy
-	python3-scapy tcpdump
+    sudo nano
+    rsync coreutils psmisc
+    git build-essential cmake ninja-build
+    astyle clang-tidy
+    doxygen graphviz
+    # unit tests tools
+    cppcheck check lcov libgtest-dev
+    python3-pip python3-venv python3-pytest
+    # network tools
+    libvdeplug-dev vde2 libvdeplug2-dev libpcap0.8-dev
+    netcat iptables tcpdump iputils-ping traceroute openvpn python3-scapy
+    # entrypoint is used to config the network and revert back to normal user
+    gosu
+    # QEMU
+    qemu-system-arm
 )
 
 apt-get install --no-install-recommends -y ${PACKAGES[@]}
