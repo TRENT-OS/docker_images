@@ -26,14 +26,18 @@ ln -s /root/.stack
 
 apt-get update
 
-apt-get install --no-install-recommends -y astyle cppcheck clang-tidy doxygen graphviz sudo
+PACKAGES=(
+	astyle cppcheck clang-tidy doxygen graphviz sudo
 
-apt-get install --no-install-recommends -y git build-essential cmake ninja-build nano
+	git build-essential cmake ninja-build nano
 
-apt-get install --no-install-recommends -y libxml2-dev libxml2
+	libxml2-dev libxml2
 
-# install unit tests tools
-apt-get install --no-install-recommends -y lcov libgtest-dev
+	# install unit tests tools
+	lcov libgtest-dev
+)
+
+apt-get install --no-install-recommends -y ${PACKAGES[@]}
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
 
 apt-get clean autoclean

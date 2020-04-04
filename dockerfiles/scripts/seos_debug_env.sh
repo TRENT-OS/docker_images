@@ -16,12 +16,15 @@ chmod -R ug+rw /home/${USER_NAME}
 # update package list
 apt-get update
 
-# install riscv gdb
-apt-get install --no-install-recommends -y gdc-riscv64-linux-gnu
+PACKAGES=(
+	# install riscv gdb
+	gdc-riscv64-linux-gnu
 
-# install ddd
-apt-get install --no-install-recommends -y ddd
+	# install ddd
+	ddd
+)
 
+apt-get install --no-install-recommends -y ${PACKAGES[@]}
 # cleanup
 apt-get clean autoclean
 apt-get autoremove --yes
