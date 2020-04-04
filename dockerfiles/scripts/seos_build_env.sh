@@ -24,8 +24,6 @@ chmod -R g=u /root/.stack
 cd /home/${USER_NAME}
 ln -s /root/.stack
 
-apt-get update
-
 PACKAGES=(
     rsync coreutils
     git build-essential cmake ninja-build
@@ -36,9 +34,11 @@ PACKAGES=(
     # XML processing
     libxml2-dev libxml2
 )
-
+apt-get update
 apt-get install --no-install-recommends -y ${PACKAGES[@]}
-cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
-
 apt-get clean autoclean
 apt-get autoremove --yes
+
+# gtest
+cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
+

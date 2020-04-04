@@ -13,7 +13,6 @@ passwd -d ${USER_NAME}
 chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
 chmod -R ug+rw /home/${USER_NAME}
 
-apt-get update
 
 PACKAGES=(
     sudo nano
@@ -32,8 +31,10 @@ PACKAGES=(
     # QEMU
     qemu-system-arm
 )
-
+apt-get update
 apt-get install --no-install-recommends -y ${PACKAGES[@]}
+apt-get clean autoclean
+apt-get autoremove --yes
 
 # install python requirements for tests
 pip3 install pytest-repeat
@@ -41,13 +42,11 @@ pip3 install pytest-repeat
 # in the latest ubuntu the name of the pytest executable has changed
 ln -s /usr/bin/pytest-3 /usr/bin/pytest
 
+# gtest
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
 
 setcap cap_net_raw,cap_net_admin+eip /usr/bin/python3.7
 setcap cap_net_raw,cap_net_admin+eip /usr/sbin/tcpdump
 
 
-# cleanup
-apt-get clean autoclean
-apt-get autoremove --yes
 
