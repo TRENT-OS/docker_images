@@ -34,10 +34,12 @@ PACKAGES=(
     # XML processing
     libxml2-dev libxml2
 )
-apt-get update
-apt-get install --no-install-recommends -y ${PACKAGES[@]}
-apt-get clean autoclean
-apt-get autoremove --yes
+
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y ${PACKAGES[@]}
+DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
+DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
 # gtest
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib

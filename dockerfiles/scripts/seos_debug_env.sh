@@ -13,9 +13,6 @@ passwd -d ${USER_NAME}
 chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
 chmod -R ug+rw /home/${USER_NAME}
 
-# update package list
-apt-get update
-
 PACKAGES=(
 	# install riscv gdb
 	gdc-riscv64-linux-gnu
@@ -24,8 +21,10 @@ PACKAGES=(
 	ddd
 )
 
-apt-get install --no-install-recommends -y ${PACKAGES[@]}
+# update package list
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y ${PACKAGES[@]}
 # cleanup
-apt-get clean autoclean
-apt-get autoremove --yes
+DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
+DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 

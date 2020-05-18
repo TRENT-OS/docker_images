@@ -31,10 +31,10 @@ PACKAGES=(
     # QEMU
     qemu-system-arm
 )
-apt-get update
-apt-get install --no-install-recommends -y ${PACKAGES[@]}
-apt-get clean autoclean
-apt-get autoremove --yes
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y ${PACKAGES[@]}
+DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
+DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
 # install python requirements for tests
 pip3 install pytest-repeat
