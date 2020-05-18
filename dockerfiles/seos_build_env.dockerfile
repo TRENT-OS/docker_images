@@ -1,4 +1,4 @@
-FROM trustworthysystems/camkes
+FROM trustworthysystems/camkes-riscv
 
 LABEL ORGANISATION="Hensoldt Cyber"
 LABEL MAINTAINER1="Carmelo carmelo.pintaudi@hensoldt-cyber.com"
