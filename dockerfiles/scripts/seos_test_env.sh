@@ -18,6 +18,7 @@ PACKAGES=(
     sudo nano
     rsync coreutils psmisc
     git build-essential cmake ninja-build
+    python3-git python3-gitdb
     astyle clang-tidy
     doxygen graphviz
     # unit tests tools
@@ -30,6 +31,7 @@ PACKAGES=(
     gosu
     # QEMU
     qemu-system-arm
+    qemu-system-riscv64
 )
 DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y ${PACKAGES[@]}

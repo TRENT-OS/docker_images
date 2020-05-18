@@ -27,6 +27,7 @@ ln -s /root/.stack
 PACKAGES=(
     rsync coreutils
     git build-essential cmake ninja-build
+    python3-git python3-gitdb
     astyle clang-tidy
     doxygen graphviz
     # unit tests tools
