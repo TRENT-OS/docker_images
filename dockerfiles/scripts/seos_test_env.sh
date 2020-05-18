@@ -43,9 +43,9 @@ pip3 install pytest-repeat
 ln -s /usr/bin/pytest-3 /usr/bin/pytest
 
 # gtest
-cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
+cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
 
-setcap cap_net_raw,cap_net_admin+eip /usr/bin/python3.7
+setcap cap_net_raw,cap_net_admin+eip /usr/bin/python3.8
 setcap cap_net_raw,cap_net_admin+eip /usr/sbin/tcpdump
 
 

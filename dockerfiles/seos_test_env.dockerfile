@@ -1,4 +1,4 @@
-FROM ubuntu:rolling
+FROM ubuntu:focal
 
 LABEL ORGANISATION="Hensoldt Cyber"
 LABEL MAINTAINER1="Carmelo carmelo.pintaudi@hensoldt-cyber.com"
