@@ -44,23 +44,23 @@ function create_docker_image()
 
 
 #-------------------------------------------------------------------------------
-function create_seos_build_env()
+function create_trentos_build_env()
 {
-    create_docker_image seos_build_env
+    create_docker_image trentos_build
 }
 
 
 #-------------------------------------------------------------------------------
-function create_seos_debug_env()
+function create_trentos_debug_env()
 {
-    create_docker_image seos_debug_env
+    create_docker_image trentos_debug
 }
 
 
 #-------------------------------------------------------------------------------
-function create_seos_test_env()
+function create_trentos_test_env()
 {
-    create_docker_image seos_test_env
+    create_docker_image trentos_test
 }
 
 
@@ -68,26 +68,26 @@ function create_seos_test_env()
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 
-if [[ "${1:-}" == "seos_build_env.dockerfile" ]]; then
-    create_seos_build_env
+if [[ "${1:-}" == "trentos_build.dockerfile" ]]; then
+    create_trentos_build_env
 
-elif [[ "${1:-}" == "seos_debug_env.dockerfile" ]]; then
-    create_seos_debug_env
+elif [[ "${1:-}" == "trentos_debug.dockerfile" ]]; then
+    create_trentos_debug_env
 
-elif [[ "${1:-}" == "seos_test_env.dockerfile" ]]; then
-    create_seos_test_env
+elif [[ "${1:-}" == "trentos_test.dockerfile" ]]; then
+    create_trentos_test_env
 
 elif [[ "${1:-}" == "all" ]]; then
-    create_seos_build_env
-    create_seos_debug_env
-    create_seos_test_env
+    create_trentos_build_env
+    create_trentos_debug_env
+    create_trentos_test_env
 
 else
     echo -e "build.sh <target> \
     \n\npossible targets are:\
-    \n\t seos_build_env.dockerfile\
-    \n\t seos_debug_env.dockerfile\
-    \n\t seos_test_env.dockerfile\
+    \n\t trentos_build.dockerfile\
+    \n\t trentos_debug.dockerfile\
+    \n\t trentos_test.dockerfile\
     \n\t all\
     "
 fi
