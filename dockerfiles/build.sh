@@ -15,7 +15,7 @@ USER_NAME=user
 
 USER_ID=$(id -u)
 
-TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+TIMESTAMP=$(date +"%Y%m%d")
 REGISTRY="docker:5000"
 #-------------------------------------------------------------------------------
 function create_docker_image()
