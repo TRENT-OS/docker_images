@@ -27,6 +27,8 @@ PACKAGES=(
     # network tools
     libvdeplug-dev vde2 libvdeplug2-dev libpcap0.8-dev
     netcat iptables tcpdump iputils-ping traceroute openvpn python3-scapy
+    # iot demo tools
+    mosquitto
     # entrypoint is used to config the network and revert back to normal user
     gosu
     # QEMU
