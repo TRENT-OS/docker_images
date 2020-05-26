@@ -28,7 +28,7 @@ function create_docker_image()
         -t ${IMAGE_ID} \
         --build-arg USER_NAME=${USER_NAME} \
         --build-arg USER_ID=${USER_ID} \
-        -f ${BUILD_SCRIPT_DIR}/${IMAGE_BASE}.dockerfile scripts/
+        -f ${BUILD_SCRIPT_DIR}/${IMAGE_BASE}.dockerfile to_container/
 
     echo "Saving image to ${IMAGE_ID} ..."
     docker tag ${IMAGE_ID} ${REGISTRY}/${IMAGE_BASE}:latest
