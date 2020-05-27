@@ -39,7 +39,12 @@ DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
 DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
 # install python requirements for tests
-pip3 install pytest-repeat
+PYTHON_PACKAGES=(
+    pytest-repeat
+    pytest-dependency
+)
+
+DEBIAN_FRONTEND=noninteractive pip3 install ${PYTHON_PACKAGES[@]}
 
 # in the latest ubuntu the name of the pytest executable has changed
 ln -s /usr/bin/pytest-3 /usr/bin/pytest
