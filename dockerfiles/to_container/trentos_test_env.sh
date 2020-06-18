@@ -29,6 +29,8 @@ PACKAGES=(
     netcat iptables tcpdump iputils-ping traceroute openvpn python3-scapy
     # iot demo tools
     mosquitto
+    # XML processing
+    libxml2-dev libxml2
     # entrypoint is used to config the network and revert back to normal user
     gosu
     # QEMU
