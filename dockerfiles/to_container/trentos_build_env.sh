@@ -15,15 +15,6 @@ chmod -R ug+rw /home/${USER_NAME}
 
 echo 'export PATH=/scripts/repo:$PATH' >> /home/${USER_NAME}/.bashrc
 
-# let the user use the Haskell stack pre-installed for root
-echo "allow-different-user: true" >> /root/.stack/config.yaml
-groupadd stack
-usermod -a -G stack ${USER_NAME}
-chmod a+x /root && chgrp -R stack /root/.stack
-chmod -R g=u /root/.stack
-cd /home/${USER_NAME}
-ln -s /root/.stack
-
 PACKAGES=(
     rsync coreutils
     git build-essential cmake ninja-build
