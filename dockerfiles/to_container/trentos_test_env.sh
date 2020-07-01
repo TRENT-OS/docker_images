@@ -31,6 +31,8 @@ PACKAGES=(
     mosquitto
     # XML processing
     libxml2-dev libxml2
+    # network tests
+    nginx
     # entrypoint is used to config the network and revert back to normal user
     gosu
     # QEMU
