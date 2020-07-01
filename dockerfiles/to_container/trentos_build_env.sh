@@ -42,6 +42,10 @@ DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y ${PACK
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
 DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
+# Fix for a sudo error when running in a container
+# https://github.com/sudo-project/sudo/issues/42
+echo "Set disable_coredump false" >> /etc/sudo.conf
+
 # gtest
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
 

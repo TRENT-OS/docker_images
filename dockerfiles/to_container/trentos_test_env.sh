@@ -50,6 +50,10 @@ PYTHON_PACKAGES=(
 
 DEBIAN_FRONTEND=noninteractive pip3 install ${PYTHON_PACKAGES[@]}
 
+# Fix for a sudo error when running in a container
+# https://github.com/sudo-project/sudo/issues/42
+echo "Set disable_coredump false" >> /etc/sudo.conf
+
 # in the latest ubuntu the name of the pytest executable has changed
 ln -s /usr/bin/pytest-3 /usr/bin/pytest
 
