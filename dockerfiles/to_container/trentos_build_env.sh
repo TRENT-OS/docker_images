@@ -46,6 +46,21 @@ DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 # https://github.com/sudo-project/sudo/issues/42
 echo "Set disable_coredump false" >> /etc/sudo.conf
 
+# Debian repositories have an older version of CMake in them
+# So we download the latest one from the official website
+wget https://cmake.org/files/v3.17/cmake-3.17.3-Linux-x86_64.sh -O /tmp/cmake.sh
+
+# Install the downloaded CMake version in /opt and symlink the binaries to /usr/local/bin
+mkdir /opt/cmake
+sh /tmp/cmake.sh --prefix=/opt/cmake --skip-license
+ln -s /opt/cmake/bin/cmake     /usr/local/bin/cmake
+ln -s /opt/cmake/bin/ccmake    /usr/local/bin/ccmake
+ln -s /opt/cmake/bin/cmake-gui /usr/local/bin/cmake-gui
+ln -s /opt/cmake/bin/cpack     /usr/local/bin/cpack
+ln -s /opt/cmake/bin/ctest     /usr/local/bin/ctest
+
+rm /tmp/cmake.sh
+
 # gtest
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
 
