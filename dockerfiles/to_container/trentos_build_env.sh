@@ -16,7 +16,7 @@ chmod -R ug+rw /home/${USER_NAME}
 echo 'export PATH=/scripts/repo:$PATH' >> /home/${USER_NAME}/.bashrc
 
 PACKAGES=(
-    rsync coreutils
+    rsync coreutils mc
     git build-essential cmake ninja-build
     python3-git python3-gitdb
     astyle clang-tidy

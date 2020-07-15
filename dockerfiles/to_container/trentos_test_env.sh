@@ -20,7 +20,7 @@ wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | 
 DEBIAN_FRONTEND=noninteractive apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
 
 PACKAGES=(
-    sudo nano
+    sudo nano mc
     rsync coreutils psmisc
     git build-essential cmake ninja-build
     python3-git python3-gitdb
