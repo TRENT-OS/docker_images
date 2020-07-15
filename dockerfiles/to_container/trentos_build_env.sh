@@ -41,8 +41,8 @@ echo "Set disable_coredump false" >> /etc/sudo.conf
 wget https://cmake.org/files/v3.17/cmake-3.17.3-Linux-x86_64.sh -O /tmp/cmake.sh
 
 if ! echo "1a99f573512793224991d24ad49283f017fa544524d8513667ea3cb89cbe368b /tmp/cmake.sh" | sha256sum -c -; then
-    echo "Hash failed"
-    exit 1
+     echo "Hash failed"
+     exit 1
 fi
 
 # Install the downloaded CMake version in /opt and symlink the binaries to /usr/local/bin
@@ -74,4 +74,3 @@ printf "user: ${USER_NAME}\ngroup: ${USER_NAME}\npaths: \n- /home/${USER_NAME}\n
 
 # gtest
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
-

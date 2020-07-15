@@ -87,6 +87,3 @@ cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
 
 setcap cap_net_raw,cap_net_admin+eip /usr/bin/python3.8
 setcap cap_net_raw,cap_net_admin+eip /usr/sbin/tcpdump
-
-
-
