@@ -18,8 +18,8 @@ USAGE_STRING="\nrepo_manager.sh <cmd> [<args>] [<opts>]\n
     \n Performs recursively actions thru the submodules tree, root included.
     \n Available actions are: branch, push, rebase, merge, delete
     \n\nExamples:\
-    \n\t $./repo_manager.sh branch DEV_BRANCH_NAME MASTER_BRANCH_NAME
-    \n\t checkout recursively of 'DEV_BRANCH_NAME', the branch gets created from MASTER_BRANCH_NAME if not yet existing\
+    \n\t $./repo_manager.sh branch DEV_BRANCH_NAME [MASTER_BRANCH_NAME]
+    \n\t checkout recursively 'DEV_BRANCH_NAME', if not yet existing the branch gets created from MASTER_BRANCH_NAME (if declared) or from the current branch\
     \n
     \n\t $./repo_manager.sh push DEV_BRANCH_NAME
     \n\t Push recursively all the commits for DEV_BRANCH_NAME\
@@ -117,12 +117,15 @@ function branch()
     if ! check_branch $1 && ! check_branch origin/$1 ; then
         echo_lgray "creating branch '$1'."
         get_confirmation || return 0
-        if ! check_branch $2 && ! check_branch origin/$2 ; then
-            echo_yellow "'$2' not such a branch exists to branch from. Skipping."
-            get_confirmation || return 1
-        else
-            checkout_and_pull $2 && checkout -b $1
+        if [ "$2" != "" ]; then
+            if ! check_branch $2 && ! check_branch origin/$2 ; then
+                echo_yellow "'$2' not such a branch exists to branch from. Skipping."
+                get_confirmation || return 1
+            else
+                checkout_and_pull $2 || return 1;
+            fi
         fi
+        checkout -b $1
     else
         echo_green "branch already exists"
         checkout $1
@@ -400,10 +403,11 @@ function exit_msg()
 #-------------------------------------------------------------------------------
 function exec_branch()
 {
-    echo -n "Checkout '$2' and update submodules.."
-    reset_layout $2 > /dev/null || exit_msg 1 "FAILED"
-    echo "OK"
-
+    if [ "$2" != "" ]; then
+        echo -n "Checkout '$2' and update submodules.."
+        reset_layout $2 > /dev/null || exit_msg 1 "FAILED"
+        echo "OK"
+    fi
     branch_all $@
 }
 
