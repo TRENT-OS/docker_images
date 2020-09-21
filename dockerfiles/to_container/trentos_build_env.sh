@@ -22,7 +22,7 @@ PACKAGES=(
     astyle clang-tidy
     doxygen graphviz
     # unit tests tools
-    cppcheck check lcov libgtest-dev
+    cppcheck check lcov libgtest-dev iwyu
     # XML processing
     libxml2-dev libxml2
 )
