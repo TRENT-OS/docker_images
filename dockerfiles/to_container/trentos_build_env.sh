@@ -73,4 +73,4 @@ mkdir -p /etc/fixuid
 printf "user: ${USER_NAME}\ngroup: ${USER_NAME}\npaths: \n- /home/${USER_NAME}\n- /tmp\n" > /etc/fixuid/config.yml
 
 # gtest
-cd /usr/src/gtest && cmake CMakeLists.txt && make && cp *.a /usr/lib
+cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
