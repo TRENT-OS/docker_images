@@ -55,6 +55,7 @@ DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 PYTHON_PACKAGES=(
     pytest-repeat
     pytest-dependency
+    pytest-benchmark
 )
 
 DEBIAN_FRONTEND=noninteractive pip3 install ${PYTHON_PACKAGES[@]}
@@ -81,6 +82,19 @@ chown root:root /usr/local/bin/fixuid
 chmod 4755 /usr/local/bin/fixuid
 mkdir -p /etc/fixuid
 printf "user: ${USER_NAME}\ngroup: ${USER_NAME}\npaths: \n- /home/${USER_NAME}\n- /tmp\n" > /etc/fixuid/config.yml
+
+
+# patched qemu downloaded from internal server
+wget --no-check-certificate https://hc-artefact/release/qemu/hc-qemu_1-20203731653_amd64.deb -O /tmp/qemu.deb
+if ! echo "77278942c0b0d31a9b621d8258b396ef060d947e8fd4eef342c91de5b0e4aebf /tmp/qemu.deb" | sha256sum -c -; then
+     echo "Hash failed"
+     exit 1
+fi
+
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/qemu.deb
+
+rm /tmp/qemu.deb
+
 
 # gtest
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
