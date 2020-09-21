@@ -63,6 +63,10 @@ function create_trentos_test_env()
     create_docker_image trentos_test
 }
 
+function create_bob()
+{
+    create_docker_image bob
+}
 
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -77,10 +81,14 @@ elif [[ "${1:-}" == "trentos_debug.dockerfile" ]]; then
 elif [[ "${1:-}" == "trentos_test.dockerfile" ]]; then
     create_trentos_test_env
 
+elif [[ "${1:-}" == "bob.dockerfile" ]]; then
+    create_bob
+
 elif [[ "${1:-}" == "all" ]]; then
     create_trentos_build_env
     create_trentos_debug_env
     create_trentos_test_env
+    create_bob
 
 else
     echo -e "build.sh <target> \
@@ -88,6 +96,7 @@ else
     \n\t trentos_build.dockerfile\
     \n\t trentos_debug.dockerfile\
     \n\t trentos_test.dockerfile\
+    \n\t bob.dockerfile\
     \n\t all\
     "
 fi
