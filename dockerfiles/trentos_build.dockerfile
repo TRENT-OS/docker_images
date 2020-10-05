@@ -6,8 +6,8 @@ LABEL MAINTAINER2="Thomas thomas.boehm@hensoldt-cyber.com"
 
 ARG USER_NAME
 ARG USER_ID
-ARG SCRIPT=trentos_build_env.sh
-ARG ENTRYPOINT_SCRIPT=build_entrypoint.sh
+ARG SCRIPT=build_env.sh
+ARG ENTRYPOINT_SCRIPT=entrypoint.sh
 
 COPY *.sh /tmp/
 

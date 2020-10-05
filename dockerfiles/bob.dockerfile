@@ -7,7 +7,7 @@ ARG USER_NAME
 ARG USER_ID
 
 ARG SCRIPT=bob.sh
-ARG ENTRYPOINT_SCRIPT=build_entrypoint.sh
+ARG ENTRYPOINT_SCRIPT=entrypoint.sh
 
 COPY ${SCRIPT} /tmp/
 
