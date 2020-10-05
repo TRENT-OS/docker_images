@@ -55,6 +55,7 @@ function create_trentos_test_env()
     create_docker_image trentos_test
 }
 
+#-------------------------------------------------------------------------------
 function create_bob()
 {
     create_docker_image bob
