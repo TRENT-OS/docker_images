@@ -120,9 +120,9 @@ function branch()
         if [ "$2" != "" ]; then
             if ! check_branch $2 && ! check_branch origin/$2 ; then
                 echo_yellow "'$2' not such a branch exists to branch from. Skipping."
-                get_confirmation || return 1
+                get_confirmation && return 0
             else
-                checkout_and_pull $2 || return 1;
+                checkout_and_pull $2 || return 1
             fi
         fi
         checkout -b $1
