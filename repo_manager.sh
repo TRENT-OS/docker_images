@@ -494,11 +494,18 @@ function exec_merge()
 
     #### Cleanup
     echo
-    echo_lgray ">>> Deleting '$SRC_BRANCH' from origin."
-    get_confirmation || clean_exit 0
+    read -r -p "is script running with 'yes |' ?" response
+    case "$response" in
+        [yY][eE][sS]|[yY])
+            # do nothing
+            ;;
+        *)
+            echo_lgray ">>> Deleting '$SRC_BRANCH' from origin."
+            get_confirmation || clean_exit 0
+            delete_all $SRC_BRANCH
+            ;;
+    esac
     echo
-
-    delete_all $SRC_BRANCH
 
     clean_exit $?
 }
