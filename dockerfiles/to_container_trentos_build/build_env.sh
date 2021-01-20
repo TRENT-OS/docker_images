@@ -35,6 +35,27 @@ DEBIAN_FRONTEND=noninteractive apt-get install -t bullseye --no-install-recommen
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
 DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
+# We install setuptools and wheel on their own, otherwise the dependencies
+# aren't resolved correctly and pip install fails
+DEBIAN_FRONTEND=noninteractive pip3 install setuptools
+DEBIAN_FRONTEND=noninteractive pip3 install wheel
+
+PIP_PACKAGES=(
+    pyfdt
+    jinja2
+    six
+    plyplus
+    future
+    aenum
+    pyelftools
+    sortedcontainers
+    orderedset
+    simpleeval
+    libarchive-c
+    jsonschema
+)
+DEBIAN_FRONTEND=noninteractive pip3 install ${PIP_PACKAGES[@]}
+
 # Fix for a sudo error when running in a container
 # https://github.com/sudo-project/sudo/issues/42
 echo "Set disable_coredump false" >> /etc/sudo.conf
