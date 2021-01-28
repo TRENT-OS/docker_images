@@ -25,6 +25,7 @@ PACKAGES=(
     cppcheck check lcov libgtest-dev iwyu
     # XML processing
     libxml2-dev libxml2
+    nano
 )
 
 DEBIAN_FRONTEND=noninteractive apt-get update
