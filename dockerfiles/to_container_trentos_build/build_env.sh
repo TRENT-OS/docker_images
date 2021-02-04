@@ -39,25 +39,28 @@ DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 # https://github.com/sudo-project/sudo/issues/42
 echo "Set disable_coredump false" >> /etc/sudo.conf
 
-# Debian repositories have an older version of CMake in them
-# So we download the latest one from the official website
-wget https://cmake.org/files/v3.17/cmake-3.17.3-Linux-x86_64.sh -O /tmp/cmake.sh
-
-if ! echo "1a99f573512793224991d24ad49283f017fa544524d8513667ea3cb89cbe368b /tmp/cmake.sh" | sha256sum -c -; then
-     echo "Hash failed"
-     exit 1
-fi
-
-# Install the downloaded CMake version in /opt and symlink the binaries to /usr/local/bin
-mkdir /opt/cmake
-sh /tmp/cmake.sh --prefix=/opt/cmake --skip-license
-ln -s /opt/cmake/bin/cmake     /usr/local/bin/cmake
-ln -s /opt/cmake/bin/ccmake    /usr/local/bin/ccmake
-ln -s /opt/cmake/bin/cmake-gui /usr/local/bin/cmake-gui
-ln -s /opt/cmake/bin/cpack     /usr/local/bin/cpack
-ln -s /opt/cmake/bin/ctest     /usr/local/bin/ctest
-
-rm /tmp/cmake.sh
+# The repository version of cmake was updated to 3.18, so at this point in time
+# we have no need to install it manually. We keep this code commented here for
+# future use when we need to install a cmake version not available in the
+# repositories.
+#
+# wget https://cmake.org/files/v3.17/cmake-3.17.3-Linux-x86_64.sh -O /tmp/cmake.sh
+#
+# if ! echo "1a99f573512793224991d24ad49283f017fa544524d8513667ea3cb89cbe368b /tmp/cmake.sh" | sha256sum -c -; then
+#      echo "Hash failed"
+#      exit 1
+# fi
+#
+# # Install the downloaded CMake version in /opt and symlink the binaries to /usr/local/bin
+# mkdir /opt/cmake
+# sh /tmp/cmake.sh --prefix=/opt/cmake --skip-license
+# ln -s /opt/cmake/bin/cmake     /usr/local/bin/cmake
+# ln -s /opt/cmake/bin/ccmake    /usr/local/bin/ccmake
+# ln -s /opt/cmake/bin/cmake-gui /usr/local/bin/cmake-gui
+# ln -s /opt/cmake/bin/cpack     /usr/local/bin/cpack
+# ln -s /opt/cmake/bin/ctest     /usr/local/bin/ctest
+#
+# rm /tmp/cmake.sh
 
 # install fixuid to fix the runtime UID/GID problem in the container entrypoint script
 wget https://github.com/boxboat/fixuid/releases/download/v0.5/fixuid-0.5-linux-amd64.tar.gz -O /tmp/fixuid-0.5-linux-amd64.tar.gz
