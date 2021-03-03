@@ -43,6 +43,7 @@ PACKAGES=(
     # QEMU
     qemu-system-arm
     qemu-system-riscv64
+    tshark
 )
 
 DEBIAN_FRONTEND=noninteractive apt-get update
