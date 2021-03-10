@@ -8,9 +8,11 @@ ARG USER_ID
 ARG SCRIPT=test_env.sh
 ARG ENTRYPOINT_SCRIPT=entrypoint.sh
 
-COPY *.sh /tmp/
+COPY ${SCRIPT} /tmp/${SCRIPT}
 
 RUN /bin/bash /tmp/${SCRIPT} ${USER_ID} ${USER_NAME}
+
+COPY *.sh /tmp/
 
 COPY demo_iot_mosquitto_config/mosquitto /etc/mosquitto
 
