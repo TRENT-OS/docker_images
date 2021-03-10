@@ -5,6 +5,8 @@ set -euxo pipefail
 BRIDGE_NAME=br0
 TAP_INTERFACES=(tap0 tap1)
 IP_ADDRESS=10.0.0.1
+IP_FORBIDDEN_HOST=11.0.0.1
+
 # netmask length in bits
 NETWORK_SIZE=24
 
@@ -48,3 +50,5 @@ sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 11000:11999 -j DNAT  -
 # are 88.
 sudo iptables -A OUTPUT -p tcp --sport 88 --tcp-flags RST RST -s ${IP_ADDRESS} --dport 88 -j ACCEPT
 sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST -s ${IP_ADDRESS} -j DROP
+# define a forbidden host for network tests
+sudo iptables -A FORWARD -p tcp -d ${IP_FORBIDDEN_HOST} -j REJECT --reject-with tcp-reset
