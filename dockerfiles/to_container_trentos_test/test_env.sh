@@ -126,6 +126,18 @@ rm /tmp/riscv.deb
 
 echo 'export PATH="/opt/hc/riscv-toolchain/bin:$PATH"' >> /home/user/.bashrc
 
+# Xilinx qemu downloaded from internal server
+wget --no-check-certificate https://hc-artefact/release/xilinx-qemu/xilinx-qemu_1-20211121133_amd64.deb -O /tmp/xilinx-qemu.deb
+if ! echo "a14f96d1fe96ea6a1e6dce7fe448ab7560a565326c467325812d23ae01ad9ac4 /tmp/xilinx-qemu.deb" | sha256sum -c -; then
+     echo "Hash failed"
+     exit 1
+fi
+
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/xilinx-qemu.deb
+
+rm /tmp/xilinx-qemu.deb
+
+
 # gtest
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
 
