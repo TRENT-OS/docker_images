@@ -91,7 +91,7 @@ printf "user: ${USER_NAME}\ngroup: ${USER_NAME}\npaths: \n- /home/${USER_NAME}\n
 
 
 # patched qemu downloaded from internal server
-wget --no-check-certificate https://hc-artefact/release/qemu/hc-qemu_1-20203731653_amd64.deb -O /tmp/qemu.deb
+wget --no-check-certificate https://192.168.82.28/release/qemu/hc-qemu_1-20203731653_amd64.deb -O /tmp/qemu.deb
 if ! echo "77278942c0b0d31a9b621d8258b396ef060d947e8fd4eef342c91de5b0e4aebf /tmp/qemu.deb" | sha256sum -c -; then
      echo "Hash failed"
      exit 1
@@ -127,7 +127,7 @@ rm /tmp/riscv.deb
 echo 'export PATH="/opt/hc/riscv-toolchain/bin:$PATH"' >> /home/user/.bashrc
 
 # Xilinx qemu downloaded from internal server
-wget --no-check-certificate https://hc-artefact/release/xilinx-qemu/xilinx-qemu_1-20211121133_amd64.deb -O /tmp/xilinx-qemu.deb
+wget --no-check-certificate https://192.168.82.28/release/xilinx-qemu/xilinx-qemu_1-20211121133_amd64.deb -O /tmp/xilinx-qemu.deb
 if ! echo "a14f96d1fe96ea6a1e6dce7fe448ab7560a565326c467325812d23ae01ad9ac4 /tmp/xilinx-qemu.deb" | sha256sum -c -; then
      echo "Hash failed"
      exit 1
