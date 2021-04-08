@@ -25,5 +25,10 @@ sudo ip link set ${BRIDGE_NAME} up
 sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 sudo iptables -A FORWARD -i ${BRIDGE_NAME} -j ACCEPT
 
+# forward external packets through nat
+# used by echo server (port 5555)
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 5555 -j DNAT  --to 10.0.0.11:5555
+sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 5555 -j DNAT  --to 10.0.0.11:5555
+
 # filter RST packets send by the linux network stack (needed for scapy)
 sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST -s ${IP_ADDRESS} -j DROP
