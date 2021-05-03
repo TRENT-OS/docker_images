@@ -20,3 +20,5 @@ RUN mv /tmp/${ENTRYPOINT_SCRIPT} /entrypoint.sh
 USER ${USER_NAME}:${USER_NAME}
 
 ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["bash"]
