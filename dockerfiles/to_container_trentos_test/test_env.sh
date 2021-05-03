@@ -44,6 +44,9 @@ PACKAGES=(
     qemu-system-arm
     qemu-system-riscv64
     tshark
+    # Needed to create SD images
+    dosfstools
+    mtools
 )
 
 DEBIAN_FRONTEND=noninteractive apt-get update
