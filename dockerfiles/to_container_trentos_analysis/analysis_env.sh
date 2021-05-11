@@ -19,6 +19,9 @@ DEBIAN_FRONTEND=noninteractive apt-get install -t bullseye --no-install-recommen
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
 DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
+# cleanup to save space
+rm -rf /var/lib/apt/lists/*
+
 # setup group for sshfs
 groupadd fuse
 usermod -a -G fuse ${USER_NAME}
