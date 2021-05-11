@@ -51,6 +51,12 @@ function create_trentos_build_env()
 }
 
 #-------------------------------------------------------------------------------
+function create_trentos_analysis_env()
+{
+    create_docker_image trentos_analysis
+}
+
+#-------------------------------------------------------------------------------
 function create_trentos_test_env()
 {
     create_docker_image trentos_test
@@ -68,6 +74,9 @@ function create_bob()
 
 if [[ "${1:-}" == "trentos_build.dockerfile" ]]; then
     create_trentos_build_env
+
+elif [[ "${1:-}" == "trentos_analysis.dockerfile" ]]; then
+    create_trentos_analysis_env
 
 elif [[ "${1:-}" == "trentos_test.dockerfile" ]]; then
     create_trentos_test_env
