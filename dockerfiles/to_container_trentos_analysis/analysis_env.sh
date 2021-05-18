@@ -64,3 +64,6 @@ cd bauhaus-suite
 
 echo 'export PATH=/opt/bauhaus-suite/bin:$PATH' >> /home/${USER_NAME}/.bashrc
 echo "export AXIVION_DASHBOARD_CONFIG=/home/${USER_NAME}/axivion-dashboard/config/" >> /home/${USER_NAME}/.bashrc
+
+# set file-creation mask of "user" with group writeable (ubuntu style)
+echo "umask 0002" >> /home/${USER_NAME}/.bashrc
