@@ -18,6 +18,9 @@ COPY *.sh /tmp/
 COPY --chown=${USER_NAME} axivion_suite/dashboard* /home/${USER_NAME}/axivion-dashboard/config/
 COPY --chown=${USER_NAME} axivion_suite/*.key /home/${USER_NAME}/.bauhaus/
 
+COPY --chown=${USER_NAME} .ssh/id_rsa* /home/${USER_NAME}/.ssh/
+COPY --chown=${USER_NAME} .ssh/known_hosts /home/${USER_NAME}/.ssh/
+
 RUN /bin/bash /tmp/${SCRIPT} ${USER_ID} ${USER_NAME}
 
 RUN chmod +x /tmp/${ENTRYPOINT_SCRIPT}
