@@ -38,7 +38,7 @@ function create_docker_image()
     #echo "Pushing image to ${REGISTRY}/${IMAGE_ID}"
     #docker push "${REGISTRY}/${IMAGE_ID}"
     #docker push "${REGISTRY}/${IMAGE_BASE}:latest"
-    
+
     #echo "saving image to ${IMAGE_ARCHIVE} ..."
     #docker save ${IMAGE_ID} | pv | bzip2 > ${IMAGE_ARCHIVE}
 }
