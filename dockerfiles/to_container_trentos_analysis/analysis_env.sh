@@ -15,7 +15,7 @@ PACKAGES=(
 )
 
 DEBIAN_FRONTEND=noninteractive apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get install -t bullseye --no-install-recommends  -y ${PACKAGES[@]}
+DEBIAN_FRONTEND=noninteractive apt-get install -t bullseye --no-install-recommends --yes ${PACKAGES[@]}
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
 DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
@@ -25,6 +25,27 @@ rm -rf /var/lib/apt/lists/*
 # setup group for sshfs
 groupadd fuse
 usermod -a -G fuse ${USER_NAME}
+
+# workaround: get and build python version 3.8 required by axivion suite because
+# installation via apt is conflicting with installed python version 3.9
+wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tgz -O /tmp/Python-3.8.10.tgz
+
+if ! echo "b37ac74d2cbad2590e7cd0dd2b3826c29afe89a734090a87bf8c03c45066cb65 /tmp/Python-3.8.10.tgz" | sha256sum -c -; then
+     echo "Hash of Python-3.8.10.tgz invalid"
+     exit 1
+fi
+
+cd /tmp
+tar -xf Python-3.8.10.tgz
+
+cd Python-3.8.10
+./configure --enable-optimizations
+make -j 8
+make altinstall
+
+cd ..
+rm Python-3.8.10.tgz
+rm Python-3.8.10 -r
 
 # get and install axivion suite
 wget --no-check-certificate https://hc-artefact/axivion_suite/bauhaus-suite-7_1_5-x86_64-gnu_linux.tar.gz -O /opt/bauhaus-suite.tar.gz
@@ -42,3 +63,4 @@ cd bauhaus-suite
 ./setup.sh
 
 echo 'export PATH=/opt/bauhaus-suite/bin:$PATH' >> /home/${USER_NAME}/.bashrc
+echo "export AXIVION_DASHBOARD_CONFIG=/home/${USER_NAME}/axivion-dashboard/config/" >> /home/${USER_NAME}/.bashrc
