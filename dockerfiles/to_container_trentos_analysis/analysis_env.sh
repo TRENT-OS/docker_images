@@ -5,9 +5,13 @@ set -euxo pipefail
 USER_ID="$1"
 USER_NAME="$2"
 
+# workaround: create folder required for java installation
+mkdir -p /usr/share/man/man1
+
 # install required packages
 PACKAGES=(
     sshfs
+    openjdk-11-jre-headless
 )
 
 DEBIAN_FRONTEND=noninteractive apt-get update
