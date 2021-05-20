@@ -86,6 +86,7 @@ elif [[ "${1:-}" == "bob.dockerfile" ]]; then
 
 elif [[ "${1:-}" == "all" ]]; then
     create_trentos_build_env
+    create_trentos_analysis_env
     create_trentos_test_env
     create_bob
 
@@ -93,6 +94,7 @@ else
     echo -e "build.sh <target> \
     \n\npossible targets are:\
     \n\t trentos_build.dockerfile\
+    \n\t trentos_analysis.dockerfile\
     \n\t trentos_test.dockerfile\
     \n\t bob.dockerfile\
     \n\t all\
