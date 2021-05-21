@@ -31,6 +31,9 @@ RUN mv /tmp/${ENTRYPOINT_SCRIPT} /entrypoint.sh
 
 USER ${USER_NAME}:${USER_NAME}
 
+# remove group-read permission of private key
+RUN chmod -R 600 /home/${USER_NAME}/.ssh/id_rsa
+
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["bash"]
