@@ -5,6 +5,7 @@ LABEL MAINTAINER1="Franz franz.schauer@hensoldt-cyber.de"
 LABEL MAINTAINER2="Thomas thomas.boehm@hensoldt-cyber.de"
 
 ARG USER_NAME
+ARG USER_ID
 ARG SCRIPT=analysis_env.sh
 ARG ENTRYPOINT_SCRIPT=entrypoint.sh
 ARG DASHBOARD_CONFIG_DIR=/home/${USER_NAME}/axivion-dashboard/config/
