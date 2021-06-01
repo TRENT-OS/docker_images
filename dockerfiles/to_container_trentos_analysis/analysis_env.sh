@@ -27,27 +27,6 @@ rm -rf /var/lib/apt/lists/*
 groupadd fuse
 usermod -a -G fuse ${USER_NAME}
 
-# workaround: get and build python version 3.8 required by axivion suite because
-# installation via apt is conflicting with installed python version 3.9
-wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tgz -O /tmp/Python-3.8.10.tgz
-
-if ! echo "b37ac74d2cbad2590e7cd0dd2b3826c29afe89a734090a87bf8c03c45066cb65 /tmp/Python-3.8.10.tgz" | sha256sum -c -; then
-     echo "Hash of Python-3.8.10.tgz invalid"
-     exit 1
-fi
-
-cd /tmp
-tar -xf Python-3.8.10.tgz
-
-cd Python-3.8.10
-./configure --enable-optimizations
-make -j 8
-make altinstall
-
-cd ..
-rm Python-3.8.10.tgz
-rm Python-3.8.10 -r
-
 # get and install axivion suite
 wget --no-check-certificate https://hc-artefact/axivion_suite/bauhaus-suite-7_1_5-x86_64-gnu_linux.tar.gz -O /opt/bauhaus-suite.tar.gz
 
