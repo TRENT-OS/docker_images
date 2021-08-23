@@ -112,6 +112,19 @@ DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/q
 rm /tmp/qemu.deb
 
 
+# riscv toolchain downloaded from internal server
+wget --no-check-certificate https://hc-artefact/release/riscv-gnu-toolchain/hc-riscv-gnu-toolchain_1-20213311845_amd64.deb -O /tmp/riscv.deb
+if ! echo "87a43ca5b1cdc3b47e4ee85fa9522f3bb56a30f8bcafc4884f1d0f75b8699b4c /tmp/riscv.deb" | sha256sum -c -; then
+     echo "Hash failed"
+     exit 1
+fi
+
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/riscv.deb
+
+rm /tmp/riscv.deb
+
+echo 'export PATH="/opt/hc/riscv-toolchain/bin:$PATH"' >> /home/user/.bashrc
+
 # gtest
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
 
