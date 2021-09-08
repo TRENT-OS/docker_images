@@ -38,6 +38,9 @@ PACKAGES=(
     # XML processing
     libxml2-dev libxml2
     nano
+    # needed for the python cryptography module
+    rustc
+    cargo
 )
 
 DEBIAN_FRONTEND=noninteractive apt-get update
@@ -66,6 +69,7 @@ PIP_PACKAGES=(
     simpleeval
     libarchive-c
     jsonschema
+    cryptography
 )
 DEBIAN_FRONTEND=noninteractive pip3 install ${PIP_PACKAGES[@]}
 
