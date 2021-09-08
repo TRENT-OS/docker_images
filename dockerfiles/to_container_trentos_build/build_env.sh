@@ -41,13 +41,16 @@ PACKAGES=(
 )
 
 DEBIAN_FRONTEND=noninteractive apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get install -t bullseye --no-install-recommends  -y ${PACKAGES[@]}
+DEBIAN_FRONTEND=noninteractive apt-get install -t bullseye --no-install-recommends -y ${PACKAGES[@]}
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
 DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
 # We install setuptools and wheel on their own, otherwise the dependencies
 # aren't resolved correctly and pip install fails
-DEBIAN_FRONTEND=noninteractive pip3 install setuptools
+# setuptools is set to version <58 because the newer versions do not support
+# 2to3: https://setuptools.readthedocs.io/en/latest/history.html#v58-0-0 which
+# breaks the container build.
+DEBIAN_FRONTEND=noninteractive pip3 install 'setuptools<58'
 DEBIAN_FRONTEND=noninteractive pip3 install wheel
 
 PIP_PACKAGES=(
