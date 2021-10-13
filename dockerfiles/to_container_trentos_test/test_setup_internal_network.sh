@@ -30,5 +30,9 @@ sudo iptables -A FORWARD -i ${BRIDGE_NAME} -j ACCEPT
 sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 5555 -j DNAT  --to 10.0.0.11:5555
 sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 5555 -j DNAT  --to 10.0.0.11:5555
 
-# filter RST packets send by the linux network stack (needed for scapy)
+# Filter RST packets send by the linux network stack (needed for scapy).
+# There is one test expecting a RST packet. This is why we add an exception 
+# rule here and allow the sending of RST is the source and destination ports
+# are 88.
+sudo iptables -A OUTPUT -p tcp --sport 88 --tcp-flags RST RST -s ${IP_ADDRESS} --dport 88 -j ACCEPT
 sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST -s ${IP_ADDRESS} -j DROP
