@@ -70,6 +70,7 @@ PIP_PACKAGES=(
     libarchive-c
     jsonschema
     cryptography
+    hexrec
 )
 DEBIAN_FRONTEND=noninteractive pip3 install ${PIP_PACKAGES[@]}
 
