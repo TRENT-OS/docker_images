@@ -61,6 +61,7 @@ PYTHON_PACKAGES=(
     pytest-dependency
     pytest-benchmark
     pytest-testconfig
+    fabric
 )
 
 DEBIAN_FRONTEND=noninteractive pip3 install ${PYTHON_PACKAGES[@]}
