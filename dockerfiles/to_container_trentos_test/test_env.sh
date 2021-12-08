@@ -126,6 +126,19 @@ rm /tmp/riscv.deb
 
 echo 'export PATH="/opt/hc/riscv-toolchain/bin:$PATH"' >> /home/user/.bashrc
 
+
+# Modified QEMU that contains a custom mig-v machine definition
+wget --no-check-certificate https://hc-artefact/release/migv-qemu/hc-migv-qemu_1-20214921845_amd64.deb -O /tmp/migv-qemu.deb
+if ! echo "380f10cd1f9dab101d90c88c7a57e46843d45c0f42cbe994a21c7a0d224fb06b /tmp/migv-qemu.deb" | sha256sum -c -; then
+     echo "Hash failed"
+     exit 1
+fi
+
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/migv-qemu.deb
+
+rm /tmp/migv-qemu.deb
+
+
 # gtest
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
 
