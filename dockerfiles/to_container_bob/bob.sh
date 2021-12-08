@@ -35,6 +35,7 @@ PACKAGES=(
     wget
     nano
     mc
+    ninja-build
 )
 
 DEBIAN_FRONTEND=noninteractive apt-get update
