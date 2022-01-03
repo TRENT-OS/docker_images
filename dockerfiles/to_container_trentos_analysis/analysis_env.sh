@@ -28,9 +28,9 @@ groupadd fuse
 usermod -a -G fuse ${USER_NAME}
 
 # get and install axivion suite
-wget --no-check-certificate https://hc-artefact/axivion_suite/bauhaus-suite-7_2_0-x86_64-gnu_linux.tar.gz -O /opt/bauhaus-suite.tar.gz
+wget --no-check-certificate https://hc-artefact/axivion_suite/bauhaus-suite-7_3_2-x86_64-gnu_linux.tar.gz -O /opt/bauhaus-suite.tar.gz
 
-if ! echo "ca9829552fc283c52523143c1427a38036928b63dbb3e162e5c713c0827b8518 /opt/bauhaus-suite.tar.gz" | sha256sum -c -; then
+if ! echo "2ac72f355774dabd66a320b25ed42fbeefdd3e2d6189f89e300dbcd7dc63df39 /opt/bauhaus-suite.tar.gz" | sha256sum -c -; then
      echo "Hash of bauhaus-suite.tar.gz invalid"
      exit 1
 fi
