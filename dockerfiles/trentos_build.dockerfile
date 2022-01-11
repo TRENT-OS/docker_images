@@ -1,8 +1,7 @@
 FROM trustworthysystems/camkes-riscv
 
-LABEL ORGANISATION="Hensoldt Cyber"
-LABEL MAINTAINER1="Carmelo carmelo.pintaudi@hensoldt-cyber.com"
-LABEL MAINTAINER2="Thomas thomas.boehm@hensoldt-cyber.com"
+LABEL MAINTAINER="info@hensoldt-cyber.com"
+LABEL ORGANISATION="HENSOLDT Cyber GmbH"
 
 ARG USER_NAME
 ARG USER_ID

@@ -1,8 +1,7 @@
 FROM trentos_build:20210503
 
-LABEL ORGANISATION="HENSOLDT Cyber"
-LABEL MAINTAINER1="Franz franz.schauer@hensoldt-cyber.de"
-LABEL MAINTAINER2="Thomas thomas.boehm@hensoldt-cyber.de"
+LABEL MAINTAINER="info@hensoldt-cyber.com"
+LABEL ORGANISATION="HENSOLDT Cyber GmbH"
 
 ARG USER_NAME
 ARG USER_ID
