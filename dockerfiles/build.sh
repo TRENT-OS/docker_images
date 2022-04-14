@@ -24,12 +24,16 @@ function create_docker_image()
 
     local IMAGE_ID=${IMAGE_BASE}:${TIMESTAMP}
     echo "Building ${IMAGE_ID} ..."
-    docker build \
-        -t ${IMAGE_ID} \
-	    --no-cache=true \
-        --build-arg USER_NAME=${USER_NAME} \
-        --build-arg USER_ID=${USER_ID} \
-        -f ${BUILD_SCRIPT_DIR}/${IMAGE_BASE}.dockerfile to_container_${IMAGE_BASE}/
+    DOCKER_BUILD_PARMAS=(
+        build
+        -t ${IMAGE_ID}
+        --no-cache=true
+        --build-arg USER_NAME=${USER_NAME}
+        --build-arg USER_ID=${USER_ID}
+        -f ${BUILD_SCRIPT_DIR}/${IMAGE_BASE}.dockerfile
+        to_container_${IMAGE_BASE}/
+    )
+    docker ${DOCKER_BUILD_PARMAS[@]}
 
     echo "Saving image to ${IMAGE_ID} ..."
     docker tag ${IMAGE_ID} ${REGISTRY}/${IMAGE_BASE}:latest
