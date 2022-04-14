@@ -43,7 +43,7 @@ sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 11000:11999 -j DNAT  -
 sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 11000:11999 -j DNAT  --to 10.0.0.11:11000-11999
 
 # Filter RST packets send by the linux network stack (needed for scapy).
-# There is one test expecting a RST packet. This is why we add an exception 
+# There is one test expecting a RST packet. This is why we add an exception
 # rule here and allow the sending of RST is the source and destination ports
 # are 88.
 sudo iptables -A OUTPUT -p tcp --sport 88 --tcp-flags RST RST -s ${IP_ADDRESS} --dport 88 -j ACCEPT

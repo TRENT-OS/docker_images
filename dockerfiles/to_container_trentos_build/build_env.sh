@@ -13,15 +13,15 @@ passwd -d ${USER_NAME}
 chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
 chmod -R ug+rw /home/${USER_NAME}
 
-# The Haskell toolchain comes pre-installed in /etc/stack in the Data61 build 
+# The Haskell toolchain comes pre-installed in /etc/stack in the Data61 build
 # container, with the files owned by the group stack.
 
 # Add user to the stack group to access the pre-installed haskell toolchain
 usermod -a -G stack ${USER_NAME}
 
-# The stack tool looks in the user's home folder for its configuration / 
-# installed Haskell compiler. If it doesn't find them there it tries 
-# downloading them from the internet. In order to avoid this we link the 
+# The stack tool looks in the user's home folder for its configuration /
+# installed Haskell compiler. If it doesn't find them there it tries
+# downloading them from the internet. In order to avoid this we link the
 # pre-installed version.
 ln -s /etc/stack/ /home/${USER_NAME}/.stack
 
