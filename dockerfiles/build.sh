@@ -72,31 +72,39 @@ function create_bob()
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 
-if [[ "${1:-}" == "trentos_build.dockerfile" ]]; then
-    create_trentos_build_env
+case "${1:-}" in
+    "trentos_build.dockerfile" )
+        create_trentos_build_env
+        ;;
 
-elif [[ "${1:-}" == "trentos_analysis.dockerfile" ]]; then
-    create_trentos_analysis_env
+    "trentos_analysis.dockerfile" )
+        create_trentos_analysis_env
+        ;;
 
-elif [[ "${1:-}" == "trentos_test.dockerfile" ]]; then
-    create_trentos_test_env
+    "trentos_test.dockerfile" )
+        create_trentos_test_env
+        ;;
 
-elif [[ "${1:-}" == "bob.dockerfile" ]]; then
-    create_bob
+    "bob.dockerfile" )
+        create_bob
+        ;;
 
-elif [[ "${1:-}" == "all" ]]; then
-    create_trentos_build_env
-    create_trentos_analysis_env
-    create_trentos_test_env
-    create_bob
+    "all" )
+        create_trentos_build_env
+        create_trentos_analysis_env
+        create_trentos_test_env
+        create_bob
+        ;;
 
-else
-    echo -e "build.sh <target> \
-    \n\npossible targets are:\
-    \n\t trentos_build.dockerfile\
-    \n\t trentos_analysis.dockerfile\
-    \n\t trentos_test.dockerfile\
-    \n\t bob.dockerfile\
-    \n\t all\
-    "
-fi
+    * )
+        echo -e "Usage: build.sh <target>\n" \
+                "\n" \
+                "  possible targets are:\n" \
+                "    trentos_build.dockerfile\n" \
+                "    trentos_analysis.dockerfile\n" \
+                "    trentos_test.dockerfile\n" \
+                "    bob.dockerfile\n" \
+                "    all\n"
+        exit 1
+        ;;
+esac
