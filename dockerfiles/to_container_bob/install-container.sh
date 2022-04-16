@@ -48,6 +48,7 @@ PACKAGES=(
 DEBIAN_FRONTEND=noninteractive apt-get install -y ${PACKAGES[@]}
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
 DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes --purge
+rm -rf /var/lib/apt/lists/*
 
 # Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
 # eventually, see also https://github.com/sudo-project/sudo/issues/42
