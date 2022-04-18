@@ -48,7 +48,6 @@ PACKAGES=(
     dosfstools
     mtools
 )
-
 DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y ${PACKAGES[@]}
@@ -63,7 +62,6 @@ PYTHON_PACKAGES=(
     pytest-testconfig
     fabric
 )
-
 DEBIAN_FRONTEND=noninteractive pip3 install ${PYTHON_PACKAGES[@]}
 
 # Fix for a sudo error when running in a container
@@ -76,19 +74,15 @@ ln -s /usr/bin/pytest-3 /usr/bin/pytest
 # install fixuid to fix the runtime UID/GID problem in the container entrypoint script
 wget https://github.com/boxboat/fixuid/releases/download/v0.5/fixuid-0.5-linux-amd64.tar.gz -O /tmp/fixuid-0.5-linux-amd64.tar.gz
 tar -C /usr/local/bin -xzf /tmp/fixuid-0.5-linux-amd64.tar.gz
-
 if ! echo "caa7e0e4c88e1b154586a46c2edde75a23f9af4b5526bb11626e924204585050 /tmp/fixuid-0.5-linux-amd64.tar.gz" | sha256sum -c -; then
      echo "Hash failed"
      exit 1
 fi
-
 rm /tmp/fixuid-0.5-linux-amd64.tar.gz
-
 chown root:root /usr/local/bin/fixuid
 chmod 4755 /usr/local/bin/fixuid
 mkdir -p /etc/fixuid
 printf "user: ${USER_NAME}\ngroup: ${USER_NAME}\npaths: \n- /home/${USER_NAME}\n- /tmp\n" > /etc/fixuid/config.yml
-
 
 # patched qemu downloaded from internal server
 wget --no-check-certificate https://hc-artefact/release/qemu/hc-qemu_1-20203731653_amd64.deb -O /tmp/qemu.deb
@@ -96,9 +90,7 @@ if ! echo "77278942c0b0d31a9b621d8258b396ef060d947e8fd4eef342c91de5b0e4aebf /tmp
      echo "Hash failed"
      exit 1
 fi
-
 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/qemu.deb
-
 rm /tmp/qemu.deb
 
 # patched qemu 6.0 downloaded from internal server
@@ -107,11 +99,8 @@ if ! echo "7496a70c50fe9109392a3dd5c632b8182589366d53dcff786a6478e09ab474db /tmp
      echo "Hash failed"
      exit 1
 fi
-
 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/qemu.deb
-
 rm /tmp/qemu.deb
-
 
 # riscv toolchain downloaded from internal server
 wget --no-check-certificate https://hc-artefact/release/riscv-gnu-toolchain/hc-riscv-gnu-toolchain_1-20213311845_amd64.deb -O /tmp/riscv.deb
@@ -119,11 +108,8 @@ if ! echo "87a43ca5b1cdc3b47e4ee85fa9522f3bb56a30f8bcafc4884f1d0f75b8699b4c /tmp
      echo "Hash failed"
      exit 1
 fi
-
 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/riscv.deb
-
 rm /tmp/riscv.deb
-
 echo 'export PATH="/opt/hc/riscv-toolchain/bin:$PATH"' >> /home/user/.bashrc
 
 # gtest
