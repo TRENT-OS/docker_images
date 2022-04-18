@@ -40,6 +40,7 @@ function export_docker_image()
     IMG_SIZE=$(docker save ${IMAGE_ID} | wc -c | numfmt --to=iec-i)
     echo "raw image size is ${IMG_SIZE}, saving compressed..."
     docker save ${IMAGE_ID} | pv | bzip2 > ${IMAGE_ARCHIVE}.bz2
+    #docker save ${IMAGE_ID} | xz -v -T0 > ${IMAGE_ARCHIVE}.xz
 }
 
 #-------------------------------------------------------------------------------
