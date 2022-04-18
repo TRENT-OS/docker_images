@@ -9,15 +9,45 @@
 #-------------------------------------------------------------------------------
 
 BUILD_SCRIPT_DIR=$(cd `dirname $0` && pwd)
-
-TIMESTAMP=$(date +"%Y%m%d")
+TODAY_TAG=$(date +"%Y%m%d")
 REGISTRY="hc-docker:5000"
-#-------------------------------------------------------------------------------
-function create_docker_image()
-{
-    local IMAGE_BASE=$1
 
-    local IMAGE_ID=${IMAGE_BASE}:${TIMESTAMP}
+#-------------------------------------------------------------------------------
+function push_docker_image()
+{
+    local IMAGE_NAME=$1
+    local IMAGE_TAG=$2
+
+    local IMAGE_ID=${IMAGE_NAME}:${IMAGE_TAG}
+
+    echo "Pushing image to ${REGISTRY}/${IMAGE_ID}"
+    docker tag ${IMAGE_ID} ${REGISTRY}/${IMAGE_ID}
+    docker push "${REGISTRY}/${IMAGE_ID}"
+    #docker tag ${IMAGE_ID} ${REGISTRY}/${IMAGE_NAME}:latest
+    #docker push "${REGISTRY}/${IMAGE_ID}:latest"
+}
+
+#-------------------------------------------------------------------------------
+function export_docker_image()
+{
+    local IMAGE_NAME=$1
+    local IMAGE_TAG=$2
+
+    local IMAGE_ID=${IMAGE_NAME}:${IMAGE_TAG}
+    local IMAGE_ARCHIVE=${IMAGE_NAME}_${IMAGE_TAG}
+
+    echo "saving image to ${IMAGE_ARCHIVE}"
+    docker save ${IMAGE_ID} | pv | bzip2 > ${IMAGE_ARCHIVE}.bz2
+}
+
+#-------------------------------------------------------------------------------
+function build_docker_image()
+{
+    local IMAGE_NAME=$1
+    local IMAGE_TAG=$2
+
+    local IMAGE_ID=${IMAGE_NAME}:${IMAGE_TAG}
+
     echo "Building ${IMAGE_ID} ..."
     DOCKER_BUILD_PARMAS=(
         build
@@ -25,46 +55,49 @@ function create_docker_image()
         --no-cache=true
         --build-arg USER_NAME="user"
         --build-arg USER_ID=1000
-        -f ${BUILD_SCRIPT_DIR}/${IMAGE_BASE}.dockerfile
-        to_container_${IMAGE_BASE}/
+        -f ${BUILD_SCRIPT_DIR}/${IMAGE_NAME}.dockerfile
+        to_container_${IMAGE_NAME}/
     )
     docker ${DOCKER_BUILD_PARMAS[@]}
-
-    echo "Saving image to ${IMAGE_ID} ..."
-    docker tag ${IMAGE_ID} ${REGISTRY}/${IMAGE_BASE}:latest
-    docker tag ${IMAGE_ID} ${REGISTRY}/${IMAGE_ID}
-
-    #echo "Pushing image to ${REGISTRY}/${IMAGE_ID}"
-    #docker push "${REGISTRY}/${IMAGE_ID}"
-    #docker push "${REGISTRY}/${IMAGE_BASE}:latest"
-
-    #echo "saving image to ${IMAGE_ARCHIVE} ..."
-    #docker save ${IMAGE_ID} | pv | bzip2 > ${IMAGE_ARCHIVE}
 }
 
+#-------------------------------------------------------------------------------
+function create_docker_image()
+{
+    local IMAGE_NAME=$1
+    local IMAGE_TAG=$2
+
+    build_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
+    #export_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
+    #push_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
+}
 
 #-------------------------------------------------------------------------------
 function create_trentos_build_env()
 {
-    create_docker_image trentos_build
+    local IMAGE_TAG=$1
+    create_docker_image trentos_build ${IMAGE_TAG}
 }
 
 #-------------------------------------------------------------------------------
 function create_trentos_analysis_env()
 {
-    create_docker_image trentos_analysis
+    local IMAGE_TAG=$1
+    create_docker_image trentos_analysis ${IMAGE_TAG}
 }
 
 #-------------------------------------------------------------------------------
 function create_trentos_test_env()
 {
-    create_docker_image trentos_test
+    local IMAGE_TAG=$1
+    create_docker_image trentos_test ${IMAGE_TAG}
 }
 
 #-------------------------------------------------------------------------------
 function create_bob()
 {
-    create_docker_image bob
+    local IMAGE_TAG=$1
+    create_docker_image bob ${IMAGE_TAG}
 }
 
 #-------------------------------------------------------------------------------
@@ -73,26 +106,26 @@ function create_bob()
 
 case "${1:-}" in
     "trentos_build.dockerfile" )
-        create_trentos_build_env
+        create_trentos_build_env ${TODAY_TAG}
         ;;
 
     "trentos_analysis.dockerfile" )
-        create_trentos_analysis_env
+        create_trentos_analysis_env ${TODAY_TAG}
         ;;
 
     "trentos_test.dockerfile" )
-        create_trentos_test_env
+        create_trentos_test_env ${TODAY_TAG}
         ;;
 
     "bob.dockerfile" )
-        create_bob
+        create_bob ${TODAY_TAG}
         ;;
 
     "all" )
-        create_trentos_build_env
-        create_trentos_analysis_env
-        create_trentos_test_env
-        create_bob
+        create_trentos_build_env ${TODAY_TAG}
+        create_trentos_analysis_env ${TODAY_TAG}
+        create_trentos_test_env ${TODAY_TAG}
+        create_bob ${TODAY_TAG}
         ;;
 
     * )
