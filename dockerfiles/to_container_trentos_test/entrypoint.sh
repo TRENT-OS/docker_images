@@ -2,7 +2,7 @@
 
 set -euxo pipefail
 
-#fix runtime uid/gid
+# fix runtime uid/gid
 eval $( fixuid -q )
 
 sudo /bin/bash /tmp/test_setup_internal_network.sh > /dev/null 2>&1
