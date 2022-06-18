@@ -13,16 +13,13 @@ passwd -d ${USER_NAME}
 chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
 chmod -R ug+rw /home/${USER_NAME}
 
-# The Haskell toolchain comes pre-installed in /etc/stack in the Data61 build
-# container, with the files owned by the group stack.
-
-# Add user to the stack group to access the pre-installed haskell toolchain
+# The Haskell toolchain comes pre-installed in /etc/stack in the seL4 build
+# container, with the files owned by the group 'stack'. Add user to this group
+# to access the toolchain. The toolchain looks in the user's home folder for its
+# configuration and the installed Haskell compiler. If it doesn't find them
+# there it tries downloading them from the internet. In order to avoid this we
+# link the pre-installed version.
 usermod -a -G stack ${USER_NAME}
-
-# The stack tool looks in the user's home folder for its configuration /
-# installed Haskell compiler. If it doesn't find them there it tries
-# downloading them from the internet. In order to avoid this we link the
-# pre-installed version.
 ln -s /etc/stack/ /home/${USER_NAME}/.stack
 
 echo 'export PATH=/scripts/repo:$PATH' >> /home/${USER_NAME}/.bashrc
@@ -72,8 +69,8 @@ PIP_PACKAGES=(
 )
 DEBIAN_FRONTEND=noninteractive pip3 install ${PIP_PACKAGES[@]}
 
-# Fix for a sudo error when running in a container
-# https://github.com/sudo-project/sudo/issues/42
+# Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
+# eventually, see also https://github.com/sudo-project/sudo/issues/42
 echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # The repository version of cmake was updated to 3.18, so at this point in time

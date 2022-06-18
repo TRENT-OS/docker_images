@@ -64,11 +64,12 @@ PYTHON_PACKAGES=(
 )
 DEBIAN_FRONTEND=noninteractive pip3 install ${PYTHON_PACKAGES[@]}
 
-# Fix for a sudo error when running in a container
-# https://github.com/sudo-project/sudo/issues/42
+# Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
+# eventually, see also https://github.com/sudo-project/sudo/issues/42
 echo "Set disable_coredump false" >> /etc/sudo.conf
 
-# in the latest ubuntu the name of the pytest executable has changed
+# provide /usr/bin/pytest for compatibility reasons, it used to exists in older
+# Ubuntu versions.
 ln -s /usr/bin/pytest-3 /usr/bin/pytest
 
 # install fixuid to fix the runtime UID/GID problem in the container entrypoint script
@@ -115,5 +116,13 @@ echo 'export PATH="/opt/hc/riscv-toolchain/bin:$PATH"' >> /home/user/.bashrc
 # gtest
 cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
 
+# Set capabilities, so the tools can run as normal user also and no "sudo" is
+# required. However, this requires the container is started with the params
+# "--cap-add=NET_ADMIN --cap-add=NET_RAW", otherwise the tool will not work and
+# the error is something like "bash: /usr/bin/python3: Operation not permitted".
+# It's best to do this set at the end of the setup, otherwise python's pip will
+# fail during the container creation, as the caps are missing when the docker
+# builder run. Maybe it's better to do this in the entrypoint script after a
+# check that the cap are available.
 setcap cap_net_raw,cap_net_admin+eip /usr/bin/python3.8
 setcap cap_net_raw,cap_net_admin+eip /usr/sbin/tcpdump

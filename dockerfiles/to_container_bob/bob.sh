@@ -40,8 +40,8 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y ${PACKAGES[@]}
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
 DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
-# Fix for a sudo error when running in a container
-# https://github.com/sudo-project/sudo/issues/42
+# Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
+# eventually, see also https://github.com/sudo-project/sudo/issues/42
 echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # Debian repositories have an older version of CMake in them
