@@ -30,6 +30,7 @@ PACKAGES=(
     xz-utils
     wget
     curl
+    picocom
     nano
     mc
     # network tools
