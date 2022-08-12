@@ -33,6 +33,7 @@ PACKAGES=(
     nano
     mc
     # network tools
+    iproute2
     iptables
     iputils-ping
     netcat
@@ -40,6 +41,7 @@ PACKAGES=(
     tcpdump
     traceroute
     tshark
+    uml-utilities
     vde2
     libpcap0.8-dev
     libvdeplug-dev
