@@ -5,6 +5,9 @@ set -euxo pipefail
 USER_ID="$1"
 USER_NAME="$2"
 
+# update packet lists
+DEBIAN_FRONTEND=noninteractive apt-get update
+
 # add the user and set an empty passed
 useradd --create-home --uid ${USER_ID} -G sudo ${USER_NAME}
 passwd -d ${USER_NAME}
@@ -38,7 +41,6 @@ PACKAGES=(
     libssl-dev
     libpixman-1-dev
 )
-DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y ${PACKAGES[@]}
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
 DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes

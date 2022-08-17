@@ -5,6 +5,9 @@ set -euxo pipefail
 USER_ID="$1"
 USER_NAME="$2"
 
+# update packet lists
+DEBIAN_FRONTEND=noninteractive apt-get update
+
 # Add the user and set an empty password.
 # The Haskell toolchain comes pre-installed in /etc/stack in the seL4 build
 # container, with the files owned by the group 'stack'. Add user to this group
@@ -54,10 +57,7 @@ PACKAGES=(
     libxml2
     libxml2-dev
 )
-DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -t bullseye --no-install-recommends -y ${PACKAGES[@]}
-DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
-DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
 # We install setuptools and wheel on their own, otherwise the dependencies
 # aren't resolved correctly and pip install fails
@@ -83,6 +83,10 @@ PIP_PACKAGES=(
     sortedcontainers
 )
 DEBIAN_FRONTEND=noninteractive pip3 install ${PIP_PACKAGES[@]}
+
+# finalize package installation and cleanup
+DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
+DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
 # Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
 # eventually, see also https://github.com/sudo-project/sudo/issues/42

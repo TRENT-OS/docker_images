@@ -5,15 +5,12 @@ set -euxo pipefail
 USER_ID="$1"
 USER_NAME="$2"
 
+# update packet lists
+DEBIAN_FRONTEND=noninteractive apt-get update
+
 # add the user and set an empty passed
 useradd --create-home --uid ${USER_ID} -G sudo ${USER_NAME}
 passwd -d ${USER_NAME}
-
-# setup repository for CMake
-DEBIAN_FRONTEND=noninteractive apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y apt-transport-https ca-certificates gnupg software-properties-common wget
-wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
-DEBIAN_FRONTEND=noninteractive apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
 
 PACKAGES=(
     sudo
@@ -74,11 +71,14 @@ PACKAGES=(
     mosquitto
     nginx
 )
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y ${PACKAGES[@]}
+
+# install a more recent CMake version
+DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y apt-transport-https gnupg software-properties-common
+wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+DEBIAN_FRONTEND=noninteractive apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
 DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y ${PACKAGES[@]}
-DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
-DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
 # install python requirements for tests
 PYTHON_PACKAGES=(
@@ -89,6 +89,10 @@ PYTHON_PACKAGES=(
     pytest-testconfig
 )
 DEBIAN_FRONTEND=noninteractive pip3 install ${PYTHON_PACKAGES[@]}
+
+# finalize package installation and cleanup
+DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
+DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
 # Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
 # eventually, see also https://github.com/sudo-project/sudo/issues/42

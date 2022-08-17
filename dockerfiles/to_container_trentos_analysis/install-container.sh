@@ -6,6 +6,9 @@ USER_ID="$1"
 USER_NAME="$2"
 DASHBOARD_CONFIG_DIR="$3"
 
+# update packet lists
+DEBIAN_FRONTEND=noninteractive apt-get update
+
 # workaround: create folder required for java installation
 mkdir -p /usr/share/man/man1
 
@@ -14,8 +17,6 @@ PACKAGES=(
     sshfs
     openjdk-11-jre-headless
 )
-
-DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -t bullseye --no-install-recommends --yes ${PACKAGES[@]}
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
 DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
