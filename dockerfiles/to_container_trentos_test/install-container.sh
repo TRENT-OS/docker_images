@@ -16,33 +16,58 @@ wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | 
 DEBIAN_FRONTEND=noninteractive apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
 
 PACKAGES=(
-    sudo nano mc
-    rsync coreutils psmisc
-    git build-essential cmake ninja-build
-    python3-git python3-gitdb
-    astyle clang-tidy
-    doxygen graphviz
-    # unit tests tools
-    cppcheck check lcov libgtest-dev
-    python3-pip python3-venv python3-pytest
-    # network tools
-    libvdeplug-dev vde2 libvdeplug2-dev libpcap0.8-dev
-    netcat iptables tcpdump iputils-ping traceroute openvpn python3-scapy
-    # iot demo tools
-    mosquitto
-    # XML processing
-    libxml2-dev libxml2
-    # network tests
-    nginx
-    # entrypoint is used to config the network and revert back to normal user
+    sudo
     gosu
+    coreutils
+    rsync
+    psmisc
+    nano
+    mc
+    # network tools
+    iptables
+    iputils-ping
+    netcat
+    openvpn
+    tcpdump
+    traceroute
+    tshark
+    vde2
+    libpcap0.8-dev
+    libvdeplug-dev
+    libvdeplug2-dev
+    # python package manager and packages
+    python3-pip
+    python3-venv
+    python3-pytest
+    python3-git
+    python3-gitdb
+    python3-scapy
+    # build tools
+    build-essential
+    git
+    cmake
+    ninja-build
+    astyle
+    clang-tidy
+    doxygen
+    graphviz
+    # image creation tools
+    dosfstools
+    mtools
+    # unit tests tools
+    cppcheck
+    check
+    lcov
+    libgtest-dev
+    # XML processing
+    libxml2-dev
+    libxml2
     # QEMU
     qemu-system-arm
     qemu-system-riscv64
-    tshark
-    # Needed to create SD images
-    dosfstools
-    mtools
+    # Test and Demo tools
+    mosquitto
+    nginx
 )
 DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
@@ -52,11 +77,11 @@ DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 
 # install python requirements for tests
 PYTHON_PACKAGES=(
-    pytest-repeat
-    pytest-dependency
-    pytest-benchmark
-    pytest-testconfig
     fabric
+    pytest-benchmark
+    pytest-dependency
+    pytest-repeat
+    pytest-testconfig
 )
 DEBIAN_FRONTEND=noninteractive pip3 install ${PYTHON_PACKAGES[@]}
 

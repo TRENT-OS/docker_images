@@ -10,26 +10,27 @@ useradd --create-home --uid ${USER_ID} -G sudo ${USER_NAME}
 passwd -d ${USER_NAME}
 
 PACKAGES=(
-    build-essential
-    zlib1g-dev
-    pkg-config
-    libglib2.0-dev
-    binutils-dev
-    libboost-all-dev
-    autoconf
-    libtool
-    libssl-dev
-    libpixman-1-dev
-    virtualenv
-    checkinstall
-    git
-    flex
-    bison
     sudo
     wget
     nano
     mc
+    # build tools
+    build-essential
+    binutils-dev
+    git
     ninja-build
+    autoconf
+    flex
+    bison
+    libtool
+    checkinstall
+    virtualenv
+    pkg-config
+    zlib1g-dev
+    libglib2.0-dev
+    libboost-all-dev
+    libssl-dev
+    libpixman-1-dev
 )
 DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -y ${PACKAGES[@]}

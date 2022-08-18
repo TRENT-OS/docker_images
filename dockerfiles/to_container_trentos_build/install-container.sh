@@ -20,19 +20,34 @@ ln -s /etc/stack/ /home/${USER_NAME}/.stack
 echo 'export PATH=/scripts/repo:$PATH' >> /home/${USER_NAME}/.bashrc
 
 PACKAGES=(
-    rsync coreutils mc
-    git build-essential cmake ninja-build
-    python3-git python3-gitdb
-    astyle clang-tidy
-    doxygen graphviz
-    # unit tests tools
-    cppcheck check lcov libgtest-dev iwyu
-    # XML processing
-    libxml2-dev libxml2
+    coreutils
+    rsync
     nano
+    mc
+    # build tools
+    build-essential
+    git
+    cmake
+    ninja-build
+    astyle
+    clang-tidy
+    doxygen
+    graphviz
+    # python
+    python3-git
+    python3-gitdb
     # needed for the python cryptography module
-    rustc
     cargo
+    rustc
+    # unit tests tools
+    cppcheck
+    check
+    iwyu
+    lcov
+    libgtest-dev
+    # XML processing
+    libxml2
+    libxml2-dev
 )
 DEBIAN_FRONTEND=noninteractive apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get install -t bullseye --no-install-recommends -y ${PACKAGES[@]}
@@ -47,20 +62,20 @@ DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
 DEBIAN_FRONTEND=noninteractive pip3 install 'setuptools<58'
 DEBIAN_FRONTEND=noninteractive pip3 install wheel
 PIP_PACKAGES=(
-    pyfdt
-    jinja2
-    six
-    plyplus
-    future
     aenum
-    pyelftools
-    sortedcontainers
-    orderedset
-    simpleeval
-    libarchive-c
-    jsonschema
     cryptography
+    future
     hexrec
+    jsonschema
+    jinja2
+    libarchive-c
+    orderedset
+    plyplus
+    pyelftools
+    pyfdt
+    simpleeval
+    six
+    sortedcontainers
 )
 DEBIAN_FRONTEND=noninteractive pip3 install ${PIP_PACKAGES[@]}
 
