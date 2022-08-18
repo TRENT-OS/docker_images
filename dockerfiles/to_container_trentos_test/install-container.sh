@@ -68,19 +68,6 @@ echo "Set disable_coredump false" >> /etc/sudo.conf
 # Ubuntu versions.
 ln -s /usr/bin/pytest-3 /usr/bin/pytest
 
-# install fixuid to fix the runtime UID/GID problem in the container entrypoint script
-wget https://github.com/boxboat/fixuid/releases/download/v0.5/fixuid-0.5-linux-amd64.tar.gz -O /tmp/fixuid.gz
-if ! echo "caa7e0e4c88e1b154586a46c2edde75a23f9af4b5526bb11626e924204585050 /tmp/fixuid.gz" | sha256sum -c -; then
-     echo "Hash failed"
-     exit 1
-fi
-tar -C /usr/local/bin -xzf /tmp/fixuid.gz
-rm /tmp/fixuid.gz
-chown root:root /usr/local/bin/fixuid
-chmod 4755 /usr/local/bin/fixuid
-mkdir -p /etc/fixuid
-printf "user: ${USER_NAME}\ngroup: ${USER_NAME}\npaths: \n- /home/${USER_NAME}\n- /tmp\n" > /etc/fixuid/config.yml
-
 # patched qemu downloaded from internal server
 wget --no-check-certificate https://hc-artefact/release/qemu/hc-qemu_1-20203731653_amd64.deb -O /tmp/qemu.deb
 if ! echo "77278942c0b0d31a9b621d8258b396ef060d947e8fd4eef342c91de5b0e4aebf /tmp/qemu.deb" | sha256sum -c -; then

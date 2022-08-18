@@ -12,6 +12,8 @@ if [ ${1:-} == "--build-package" ]; then
         --owner=0       # no owner (current user will be used when extracting)
         --group=0       # no group (current user's primary group will be used when extracting)
         # installation scripts
+        -C ${SCRIPT_DIR}/../install-scripts
+        install-fixuid.sh
         -C ${SCRIPT_DIR}
         install-script.sh
         ${SCRIPT_INSTALL_CONTAINER}
@@ -42,3 +44,6 @@ ${SCRIPT_DIR}/${SCRIPT_INSTALL_CONTAINER} ${USER_ID} ${USER_NAME}
 mv /etc/mosquitto /etc/mosquitto.org
 cp -vr ${SCRIPT_DIR}/demo_iot_mosquitto_config/mosquitto/ /etc/mosquitto/
 cp -v ${SCRIPT_DIR}/nginx/default /etc/nginx/sites-enabled/
+
+# install fixuid tool, entrypoint script uses it to align UID/GID issues.
+${SCRIPT_DIR}/install-fixuid.sh ${USER_ID} ${USER_NAME}
