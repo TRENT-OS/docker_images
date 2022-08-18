@@ -24,6 +24,7 @@ PACKAGES=(
     gosu
     ca-certificates
     coreutils
+    libcap2-bin
     rsync
     psmisc
     bzip2
