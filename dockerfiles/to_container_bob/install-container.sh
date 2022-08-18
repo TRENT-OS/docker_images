@@ -5,8 +5,12 @@ set -euxo pipefail
 USER_ID="$1"
 USER_NAME="$2"
 
-# update packet lists
+# install latest updates and clean up afterwards, so any changes are clearly
+# visible in the logs.
 DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
+DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes --purge
 
 # add the user and set an empty passed
 useradd --create-home --uid ${USER_ID} -G sudo ${USER_NAME}
@@ -43,7 +47,7 @@ PACKAGES=(
 )
 DEBIAN_FRONTEND=noninteractive apt-get install -y ${PACKAGES[@]}
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
-DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
+DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes --purge
 
 # Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
 # eventually, see also https://github.com/sudo-project/sudo/issues/42

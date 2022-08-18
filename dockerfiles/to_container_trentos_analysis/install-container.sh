@@ -6,8 +6,12 @@ USER_ID="$1"
 USER_NAME="$2"
 DASHBOARD_CONFIG_DIR="$3"
 
-# update packet lists
+# install latest updates and clean up afterwards, so any changes are clearly
+# visible in the logs.
 DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
+DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes --purge
 
 # workaround: create folder required for java installation
 mkdir -p /usr/share/man/man1
@@ -19,7 +23,7 @@ PACKAGES=(
 )
 DEBIAN_FRONTEND=noninteractive apt-get install -t bullseye --no-install-recommends --yes ${PACKAGES[@]}
 DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
-DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes
+DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes --purge
 
 # cleanup to save some space
 rm -rf /usr/share/man/man1
