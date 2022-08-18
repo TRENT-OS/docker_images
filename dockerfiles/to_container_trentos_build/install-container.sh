@@ -49,8 +49,18 @@ PACKAGES=(
     doxygen
     graphviz
     # python
+    python3
+    python-is-python3
+    python3-cryptography
+    python3-future
     python3-git
-    python3-gitdb
+    python3-jinja2
+    python3-jsonschema
+    python3-libarchive-c
+    python3-pyelftools
+    python3-simpleeval
+    python3-six
+    python3-sortedcontainers
     # needed for the python cryptography module
     cargo
     rustc
@@ -75,7 +85,7 @@ apt-get install -t bullseye --no-install-recommends -y ${PACKAGES[@]}
 #apt-get update
 #apt-get upgrade -y
 
-# We install setuptools and wheel on their own, otherwise the dependencies
+# Install python package that are not available via apt. The packages setuptools and wheel on their own, otherwise the dependencies
 # aren't resolved correctly and pip install fails
 # setuptools is set to version <58 because the newer versions do not support
 # 2to3: https://setuptools.readthedocs.io/en/latest/history.html#v58-0-0 which
@@ -84,19 +94,10 @@ pip3 install 'setuptools<58'
 pip3 install wheel
 PIP_PACKAGES=(
     aenum
-    cryptography
-    future
     hexrec
-    jsonschema
-    jinja2
-    libarchive-c
     orderedset
     plyplus
-    pyelftools
     pyfdt
-    simpleeval
-    six
-    sortedcontainers
 )
 pip3 install ${PIP_PACKAGES[@]}
 

@@ -41,13 +41,17 @@ PACKAGES=(
     bison
     libtool
     checkinstall
-    virtualenv
     pkg-config
     zlib1g-dev
     libglib2.0-dev
     libboost-all-dev
     libssl-dev
     libpixman-1-dev
+    # python, package manager and packages
+    python3
+    python-is-python3
+    python3-pip
+    python3-virtualenv
 )
 apt-get install -y ${PACKAGES[@]}
 

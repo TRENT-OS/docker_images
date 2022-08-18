@@ -44,13 +44,16 @@ PACKAGES=(
     libpcap0.8-dev
     libvdeplug-dev
     libvdeplug2-dev
-    # python package manager and packages
+    # python, package manager and packages
+    python3
+    python-is-python3
     python3-pip
     python3-venv
-    python3-pytest
+    python3-fabric
     python3-git
-    python3-gitdb
     python3-scapy
+    python3-pytest
+    python3-pytest-benchmark
     # build tools
     build-essential
     git
@@ -87,10 +90,8 @@ apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
 apt-get update
 apt-get upgrade -y
 
-# install python requirements for tests
+# install python package that are not available via apt
 PYTHON_PACKAGES=(
-    fabric
-    pytest-benchmark
     pytest-dependency
     pytest-repeat
     pytest-testconfig
