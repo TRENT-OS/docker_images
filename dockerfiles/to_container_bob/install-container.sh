@@ -11,7 +11,13 @@ passwd -d ${USER_NAME}
 
 PACKAGES=(
     sudo
+    ca-certificates
+    coreutils
+    rsync
+    bzip2
+    xz-utils
     wget
+    curl
     nano
     mc
     # build tools

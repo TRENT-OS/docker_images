@@ -18,9 +18,14 @@ DEBIAN_FRONTEND=noninteractive apt-add-repository 'deb https://apt.kitware.com/u
 PACKAGES=(
     sudo
     gosu
+    ca-certificates
     coreutils
     rsync
     psmisc
+    bzip2
+    xz-utils
+    wget
+    curl
     nano
     mc
     # network tools

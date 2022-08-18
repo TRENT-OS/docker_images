@@ -20,8 +20,13 @@ ln -s /etc/stack/ /home/${USER_NAME}/.stack
 echo 'export PATH=/scripts/repo:$PATH' >> /home/${USER_NAME}/.bashrc
 
 PACKAGES=(
+    ca-certificates
     coreutils
     rsync
+    bzip2
+    xz-utils
+    wget
+    curl
     nano
     mc
     # build tools
