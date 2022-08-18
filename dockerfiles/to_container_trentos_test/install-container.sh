@@ -2,15 +2,18 @@
 
 set -euxo pipefail
 
+# ensure apt family tools and pip3 don't try and user interaction
+export DEBIAN_FRONTEND=noninteractive
+
 USER_ID="$1"
 USER_NAME="$2"
 
 # install latest updates and clean up afterwards, so any changes are clearly
 # visible in the logs.
-DEBIAN_FRONTEND=noninteractive apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
-DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes --purge
+apt-get update
+apt-get upgrade -y
+apt-get clean autoclean
+apt-get autoremove --yes --purge
 
 # add the user and set an empty passed
 useradd --create-home --uid ${USER_ID} -G sudo ${USER_NAME}
@@ -75,14 +78,14 @@ PACKAGES=(
     mosquitto
     nginx
 )
-DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y ${PACKAGES[@]}
+apt-get install --no-install-recommends -y ${PACKAGES[@]}
 
 # install a more recent CMake version
-DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y apt-transport-https gnupg software-properties-common
+apt-get install --no-install-recommends -y apt-transport-https gnupg software-properties-common
 wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
-DEBIAN_FRONTEND=noninteractive apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
-DEBIAN_FRONTEND=noninteractive apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
+apt-get update
+apt-get upgrade -y
 
 # install python requirements for tests
 PYTHON_PACKAGES=(
@@ -92,11 +95,11 @@ PYTHON_PACKAGES=(
     pytest-repeat
     pytest-testconfig
 )
-DEBIAN_FRONTEND=noninteractive pip3 install ${PYTHON_PACKAGES[@]}
+pip3 install ${PYTHON_PACKAGES[@]}
 
 # finalize package installation and cleanup
-DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
-DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes --purge
+apt-get clean autoclean
+apt-get autoremove --yes --purge
 rm -rf /var/lib/apt/lists/*
 
 # Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
@@ -113,7 +116,7 @@ if ! echo "77278942c0b0d31a9b621d8258b396ef060d947e8fd4eef342c91de5b0e4aebf /tmp
      echo "Hash failed"
      exit 1
 fi
-DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/qemu.deb
+apt-get install --no-install-recommends -y /tmp/qemu.deb
 rm /tmp/qemu.deb
 
 # patched qemu 6.0 downloaded from internal server
@@ -122,7 +125,7 @@ if ! echo "7496a70c50fe9109392a3dd5c632b8182589366d53dcff786a6478e09ab474db /tmp
      echo "Hash failed"
      exit 1
 fi
-DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/qemu.deb
+apt-get install --no-install-recommends -y /tmp/qemu.deb
 rm /tmp/qemu.deb
 
 # riscv toolchain downloaded from internal server
@@ -131,7 +134,7 @@ if ! echo "87a43ca5b1cdc3b47e4ee85fa9522f3bb56a30f8bcafc4884f1d0f75b8699b4c /tmp
      echo "Hash failed"
      exit 1
 fi
-DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/riscv.deb
+apt-get install --no-install-recommends -y /tmp/riscv.deb
 rm /tmp/riscv.deb
 echo 'export PATH="/opt/hc/riscv-toolchain/bin:$PATH"' >> /home/user/.bashrc
 

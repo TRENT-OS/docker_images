@@ -2,15 +2,18 @@
 
 set -euxo pipefail
 
+# ensure apt family tools and pip3 don't try and user interaction
+export DEBIAN_FRONTEND=noninteractive
+
 USER_ID="$1"
 USER_NAME="$2"
 
 # install latest updates and clean up afterwards, so any changes are clearly
 # visible in the logs.
-DEBIAN_FRONTEND=noninteractive apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
-DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes --purge
+apt-get update
+apt-get upgrade -y
+apt-get clean autoclean
+apt-get autoremove --yes --purge
 
 # add the user and set an empty passed
 useradd --create-home --uid ${USER_ID} -G sudo ${USER_NAME}
@@ -45,9 +48,9 @@ PACKAGES=(
     libssl-dev
     libpixman-1-dev
 )
-DEBIAN_FRONTEND=noninteractive apt-get install -y ${PACKAGES[@]}
-DEBIAN_FRONTEND=noninteractive apt-get clean autoclean
-DEBIAN_FRONTEND=noninteractive apt-get autoremove --yes --purge
+apt-get install -y ${PACKAGES[@]}
+apt-get clean autoclean
+apt-get autoremove --yes --purge
 rm -rf /var/lib/apt/lists/*
 
 # Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
