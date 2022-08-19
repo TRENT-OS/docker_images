@@ -10,11 +10,6 @@
 
 BUILD_SCRIPT_DIR=$(cd `dirname $0` && pwd)
 
-#USER_NAME=$(whoami)
-USER_NAME=user
-
-USER_ID=$(id -u)
-
 TIMESTAMP=$(date +"%Y%m%d")
 REGISTRY="hc-docker:5000"
 #-------------------------------------------------------------------------------
@@ -28,8 +23,8 @@ function create_docker_image()
         build
         -t ${IMAGE_ID}
         --no-cache=true
-        --build-arg USER_NAME=${USER_NAME}
-        --build-arg USER_ID=${USER_ID}
+        --build-arg USER_NAME="user"
+        --build-arg USER_ID=1000
         -f ${BUILD_SCRIPT_DIR}/${IMAGE_BASE}.dockerfile
         to_container_${IMAGE_BASE}/
     )
