@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script must run with proper access rights, usually via sudo.
+
 set -euxo pipefail
 
 BRIDGE_NAME=br0
@@ -9,42 +11,42 @@ IP_ADDRESS=10.0.0.1
 NETWORK_SIZE=24
 
 # create the bridge
-sudo ip link add ${BRIDGE_NAME} type bridge
+ip link add ${BRIDGE_NAME} type bridge
 
 # add TAP devices to bridge
 for TAP in "${TAP_INTERFACES[@]}"; do
-    sudo ip tuntap add ${TAP} mode tap
-    sudo ip link set ${TAP} master ${BRIDGE_NAME}
-    sudo ip link set ${TAP} up
+    ip tuntap add ${TAP} mode tap
+    ip link set ${TAP} master ${BRIDGE_NAME}
+    ip link set ${TAP} up
 done
 
-sudo ip addr add ${IP_ADDRESS}/${NETWORK_SIZE} dev ${BRIDGE_NAME}
-sudo ip link set ${BRIDGE_NAME} up
+ip addr add ${IP_ADDRESS}/${NETWORK_SIZE} dev ${BRIDGE_NAME}
+ip link set ${BRIDGE_NAME} up
 
 # enable NAT of the internal network
-sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-sudo iptables -A FORWARD -i ${BRIDGE_NAME} -j ACCEPT
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+iptables -A FORWARD -i ${BRIDGE_NAME} -j ACCEPT
 
 # forward external packets through nat
 # used by echo server (port 5555)
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 5555 -j DNAT --to 10.0.0.11:5555
-sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 5555 -j DNAT --to 10.0.0.11:5555
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 5555 -j DNAT --to 10.0.0.11:5555
+iptables -t nat -A PREROUTING -i eth0 -p udp --dport 5555 -j DNAT --to 10.0.0.11:5555
 
 # used by filter demo
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 5560 -j DNAT --to 10.0.0.10:5560
-sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 5560 -j DNAT --to 10.0.0.10:5560
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 5560 -j DNAT --to 10.0.0.10:5560
+iptables -t nat -A PREROUTING -i eth0 -p udp --dport 5560 -j DNAT --to 10.0.0.10:5560
 
 # forward port range 10000:10999 to 10.0.0.10
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 10000:10999 -j DNAT --to 10.0.0.10:10000-10999
-sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 10000:10999 -j DNAT --to 10.0.0.10:10000-10999
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 10000:10999 -j DNAT --to 10.0.0.10:10000-10999
+iptables -t nat -A PREROUTING -i eth0 -p udp --dport 10000:10999 -j DNAT --to 10.0.0.10:10000-10999
 
 # forward port range 11000:11999 to 10.0.0.11
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 11000:11999 -j DNAT --to 10.0.0.11:11000-11999
-sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 11000:11999 -j DNAT --to 10.0.0.11:11000-11999
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 11000:11999 -j DNAT --to 10.0.0.11:11000-11999
+iptables -t nat -A PREROUTING -i eth0 -p udp --dport 11000:11999 -j DNAT --to 10.0.0.11:11000-11999
 
 # Filter RST packets send by the linux network stack (needed for scapy).
 # There is one test expecting a RST packet. This is why we add an exception
 # rule here and allow the sending of RST is the source and destination ports
 # are 88.
-sudo iptables -A OUTPUT -p tcp --sport 88 --tcp-flags RST RST -s ${IP_ADDRESS} --dport 88 -j ACCEPT
-sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST -s ${IP_ADDRESS} -j DROP
+iptables -A OUTPUT -p tcp --sport 88 --tcp-flags RST RST -s ${IP_ADDRESS} --dport 88 -j ACCEPT
+iptables -A OUTPUT -p tcp --tcp-flags RST RST -s ${IP_ADDRESS} -j DROP
