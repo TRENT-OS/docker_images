@@ -27,20 +27,20 @@ sudo iptables -A FORWARD -i ${BRIDGE_NAME} -j ACCEPT
 
 # forward external packets through nat
 # used by echo server (port 5555)
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 5555 -j DNAT  --to 10.0.0.11:5555
-sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 5555 -j DNAT  --to 10.0.0.11:5555
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 5555 -j DNAT --to 10.0.0.11:5555
+sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 5555 -j DNAT --to 10.0.0.11:5555
 
 # used by filter demo
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 5560 -j DNAT  --to 10.0.0.10:5560
-sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 5560 -j DNAT  --to 10.0.0.10:5560
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 5560 -j DNAT --to 10.0.0.10:5560
+sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 5560 -j DNAT --to 10.0.0.10:5560
 
 # forward port range 10000:10999 to 10.0.0.10
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 10000:10999 -j DNAT  --to 10.0.0.10:10000-10999
-sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 10000:10999 -j DNAT  --to 10.0.0.10:10000-10999
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 10000:10999 -j DNAT --to 10.0.0.10:10000-10999
+sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 10000:10999 -j DNAT --to 10.0.0.10:10000-10999
 
 # forward port range 11000:11999 to 10.0.0.11
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 11000:11999 -j DNAT  --to 10.0.0.11:11000-11999
-sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 11000:11999 -j DNAT  --to 10.0.0.11:11000-11999
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 11000:11999 -j DNAT --to 10.0.0.11:11000-11999
+sudo iptables -t nat -A PREROUTING -i eth0 -p udp --dport 11000:11999 -j DNAT --to 10.0.0.11:11000-11999
 
 # Filter RST packets send by the linux network stack (needed for scapy).
 # There is one test expecting a RST packet. This is why we add an exception
