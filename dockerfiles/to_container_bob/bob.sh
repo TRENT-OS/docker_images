@@ -13,8 +13,6 @@ passwd -d ${USER_NAME}
 chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
 chmod -R ug+rw /home/${USER_NAME}
 
-echo 'export PATH=/scripts/repo:$PATH' >> /home/${USER_NAME}/.bashrc
-
 PACKAGES=(
     build-essential
     zlib1g-dev
