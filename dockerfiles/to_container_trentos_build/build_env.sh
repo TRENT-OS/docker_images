@@ -5,21 +5,16 @@ set -euxo pipefail
 USER_ID="$1"
 USER_NAME="$2"
 
-# add the user
-useradd -u ${USER_ID} ${USER_NAME} -d /home/${USER_NAME}
-mkdir /home/${USER_NAME}
-adduser ${USER_NAME} sudo
-passwd -d ${USER_NAME}
-chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
-chmod -R ug+rw /home/${USER_NAME}
-
+# Add the user and set an empty password.
 # The Haskell toolchain comes pre-installed in /etc/stack in the seL4 build
 # container, with the files owned by the group 'stack'. Add user to this group
-# to access the toolchain. The toolchain looks in the user's home folder for its
-# configuration and the installed Haskell compiler. If it doesn't find them
-# there it tries downloading them from the internet. In order to avoid this we
-# link the pre-installed version.
-usermod -a -G stack ${USER_NAME}
+# to access the toolchain.
+useradd --create-home --uid ${USER_ID} -G sudo,stack ${USER_NAME}
+passwd -d ${USER_NAME}
+# The Haskell toolchain looks in the user's home folder for its configuration
+# and the installed Haskell compiler. If it doesn't find them there it tries
+# downloading them from the internet. In order to avoid this we link the
+# pre-installed version.
 ln -s /etc/stack/ /home/${USER_NAME}/.stack
 
 echo 'export PATH=/scripts/repo:$PATH' >> /home/${USER_NAME}/.bashrc

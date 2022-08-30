@@ -5,13 +5,9 @@ set -euxo pipefail
 USER_ID="$1"
 USER_NAME="$2"
 
-# add the user
-useradd -u ${USER_ID} ${USER_NAME} -d /home/${USER_NAME}
-mkdir /home/${USER_NAME}
-adduser ${USER_NAME} sudo
+# add the user and set an empty passed
+useradd --create-home --uid ${USER_ID} -G sudo ${USER_NAME}
 passwd -d ${USER_NAME}
-chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
-chmod -R ug+rw /home/${USER_NAME}
 
 PACKAGES=(
     build-essential
