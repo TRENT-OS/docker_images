@@ -50,16 +50,23 @@ function build_docker_image()
     local IMAGE_TAG=$2
 
     local IMAGE_ID=${IMAGE_NAME}:${IMAGE_TAG}
+    local BASE_DIR="${BUILD_SCRIPT_DIR}/to_container_${IMAGE_NAME}"
+
+    # There might be a script that creates an installer package
+    local INSTALLER="${BASE_DIR}/install-script.sh"
+    if [ -f "${INSTALLER}" ]; then
+        ${INSTALLER} --build-package
+    fi
 
     echo "Building ${IMAGE_ID} ..."
-    DOCKER_BUILD_PARMAS=(
+    local DOCKER_BUILD_PARMAS=(
         build
         -t ${IMAGE_ID}
         --no-cache=true
         --build-arg USER_NAME="user"
         --build-arg USER_ID=1000
-        -f ${BUILD_SCRIPT_DIR}/${IMAGE_NAME}.dockerfile
-        to_container_${IMAGE_NAME}/
+        -f ${BASE_DIR}/dockerfile
+        .
     )
     docker ${DOCKER_BUILD_PARMAS[@]}
 }
@@ -70,37 +77,14 @@ function create_docker_image()
     local IMAGE_NAME=$1
     local IMAGE_TAG=$2
 
-    build_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
-    #export_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
-    #push_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
-}
-
-#-------------------------------------------------------------------------------
-function create_trentos_build_env()
-{
-    local IMAGE_TAG=$1
-    create_docker_image trentos_build ${IMAGE_TAG}
-}
-
-#-------------------------------------------------------------------------------
-function create_trentos_analysis_env()
-{
-    local IMAGE_TAG=$1
-    create_docker_image trentos_analysis ${IMAGE_TAG}
-}
-
-#-------------------------------------------------------------------------------
-function create_trentos_test_env()
-{
-    local IMAGE_TAG=$1
-    create_docker_image trentos_test ${IMAGE_TAG}
-}
-
-#-------------------------------------------------------------------------------
-function create_bob()
-{
-    local IMAGE_TAG=$1
-    create_docker_image bob ${IMAGE_TAG}
+    local BUILD_DIR="build_${IMAGE_NAME}_$(date --utc +'%Y%m%d%H%M%S')"
+    mkdir -p ${BUILD_DIR}
+    (
+        cd ${BUILD_DIR}
+        build_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
+        #export_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
+        #push_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
+    )
 }
 
 #-------------------------------------------------------------------------------
@@ -108,37 +92,25 @@ function create_bob()
 #-------------------------------------------------------------------------------
 
 case "${1:-}" in
-    "trentos_build.dockerfile" )
-        create_trentos_build_env ${TODAY_TAG}
-        ;;
-
-    "trentos_analysis.dockerfile" )
-        create_trentos_analysis_env ${TODAY_TAG}
-        ;;
-
-    "trentos_test.dockerfile" )
-        create_trentos_test_env ${TODAY_TAG}
-        ;;
-
-    "bob.dockerfile" )
-        create_bob ${TODAY_TAG}
+    trentos_build|trentos_analysis|trentos_test|bob )
+        create_docker_image $1 ${TODAY_TAG}
         ;;
 
     "all" )
-        create_trentos_build_env ${TODAY_TAG}
-        create_trentos_analysis_env ${TODAY_TAG}
-        create_trentos_test_env ${TODAY_TAG}
-        create_bob ${TODAY_TAG}
+        create_docker_image trentos_build ${TODAY_TAG}
+        create_docker_image trentos_analysis ${TODAY_TAG}
+        create_docker_image trentos_test ${TODAY_TAG}
+        create_docker_image bob ${TODAY_TAG}
         ;;
 
     * )
         echo -e "Usage: build.sh <target>\n" \
                 "\n" \
                 "  possible targets are:\n" \
-                "    trentos_build.dockerfile\n" \
-                "    trentos_analysis.dockerfile\n" \
-                "    trentos_test.dockerfile\n" \
-                "    bob.dockerfile\n" \
+                "    trentos_build\n" \
+                "    trentos_analysis\n" \
+                "    trentos_test\n" \
+                "    bob\n" \
                 "    all\n"
         exit 1
         ;;

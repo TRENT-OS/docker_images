@@ -2,8 +2,9 @@
 
 set -euxo pipefail
 
-USER_NAME="$1"
-DASHBOARD_CONFIG_DIR="$2"
+USER_ID="$1"
+USER_NAME="$2"
+DASHBOARD_CONFIG_DIR="$3"
 
 # workaround: create folder required for java installation
 mkdir -p /usr/share/man/man1
@@ -28,19 +29,18 @@ groupadd fuse
 usermod -a -G fuse ${USER_NAME}
 
 # get and install axivion suite
-wget --no-check-certificate https://hc-artefact/axivion_suite/bauhaus-suite-7_3_2-x86_64-gnu_linux.tar.gz -O /opt/bauhaus-suite.tar.gz
+wget --no-check-certificate https://hc-artefact/axivion_suite/bauhaus-suite-7_3_2-x86_64-gnu_linux.tar.gz -O /tmp/bauhaus-suite.tar.gz
 
 if ! echo "2ac72f355774dabd66a320b25ed42fbeefdd3e2d6189f89e300dbcd7dc63df39 /opt/bauhaus-suite.tar.gz" | sha256sum -c -; then
      echo "Hash of bauhaus-suite.tar.gz invalid"
      exit 1
 fi
-
-cd /opt
-tar xzf bauhaus-suite.tar.gz
-rm bauhaus-suite.tar.gz
-
-cd bauhaus-suite
-./setup.sh
+tar -xzf /tmp/bauhaus-suite.tar.gz -C /opt
+rm /tmp/bauhaus-suite.tar.gz
+(
+    cd /opt/bauhaus-suite
+    ./setup.sh
+)
 
 echo 'export PATH=/opt/bauhaus-suite/bin:$PATH' >> /home/${USER_NAME}/.bashrc
 echo "export AXIVION_DASHBOARD_CONFIG=${DASHBOARD_CONFIG_DIR}" >> /home/${USER_NAME}/.bashrc

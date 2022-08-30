@@ -1,0 +1,19 @@
+FROM trentos_build:20210503
+
+LABEL MAINTAINER="info@hensoldt-cyber.com"
+LABEL ORGANISATION="HENSOLDT Cyber GmbH"
+
+ARG USER_NAME
+ARG USER_ID
+
+# Copy archive contents into container and run installer script.
+ADD install-package.tgz /tmp/install-scripts/
+RUN cd /tmp/install-scripts \
+    && ./install-script.sh ${USER_ID} ${USER_NAME} \
+    && rm -rf /tmp/* /var/tmp/*
+
+USER ${USER_NAME}:${USER_NAME}
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["bash"]

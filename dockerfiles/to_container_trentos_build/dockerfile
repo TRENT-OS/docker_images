@@ -1,0 +1,21 @@
+FROM trustworthysystems/camkes-riscv
+
+LABEL MAINTAINER="info@hensoldt-cyber.com"
+LABEL ORGANISATION="HENSOLDT Cyber GmbH"
+
+ARG USER_NAME
+ARG USER_ID
+
+# Copy archive contents into container and run installer script.
+# trustworthysystems/camkes has scripts in /tmp, so we can't remove all content
+# there as a clean-up step.
+ADD install-package.tgz /tmp/install-scripts/
+RUN cd /tmp/install-scripts \
+    && ./install-script.sh ${USER_ID} ${USER_NAME} \
+    && rm -rf /tmp/install-scripts /var/tmp/*
+
+USER ${USER_NAME}:${USER_NAME}
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["bash"]
