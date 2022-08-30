@@ -34,6 +34,7 @@ PACKAGES=(
     build-essential
     binutils-dev
     git
+    cmake
     ninja-build
     autoconf
     flex
@@ -49,6 +50,15 @@ PACKAGES=(
     libpixman-1-dev
 )
 apt-get install -y ${PACKAGES[@]}
+
+# install a more recent CMake version
+apt-get install --no-install-recommends -y apt-transport-https gnupg software-properties-common
+wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
+apt-get update
+apt-get upgrade -y
+
+# finalize package installation and cleanup
 apt-get clean autoclean
 apt-get autoremove --yes --purge
 rm -rf /var/lib/apt/lists/*
@@ -56,20 +66,3 @@ rm -rf /var/lib/apt/lists/*
 # Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
 # eventually, see also https://github.com/sudo-project/sudo/issues/42
 echo "Set disable_coredump false" >> /etc/sudo.conf
-
-# Debian repositories have an older version of CMake in them
-# So we download the latest one from the official website
-wget https://cmake.org/files/v3.17/cmake-3.17.3-Linux-x86_64.sh -O /tmp/cmake.sh
-if ! echo "1a99f573512793224991d24ad49283f017fa544524d8513667ea3cb89cbe368b /tmp/cmake.sh" | sha256sum -c -; then
-     echo "Hash failed"
-     exit 1
-fi
-# Install the downloaded CMake version in /opt and symlink the binaries to /usr/local/bin
-mkdir /opt/cmake
-sh /tmp/cmake.sh --prefix=/opt/cmake --skip-license
-ln -s /opt/cmake/bin/cmake     /usr/local/bin/cmake
-ln -s /opt/cmake/bin/ccmake    /usr/local/bin/ccmake
-ln -s /opt/cmake/bin/cmake-gui /usr/local/bin/cmake-gui
-ln -s /opt/cmake/bin/cpack     /usr/local/bin/cpack
-ln -s /opt/cmake/bin/ctest     /usr/local/bin/ctest
-rm /tmp/cmake.sh

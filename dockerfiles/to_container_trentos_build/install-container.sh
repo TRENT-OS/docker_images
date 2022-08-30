@@ -66,6 +66,15 @@ PACKAGES=(
 )
 apt-get install -t bullseye --no-install-recommends -y ${PACKAGES[@]}
 
+# The base container has 3.18, so at this point in time we have no need to
+# install a more recent version. However, the lines below can be used to get the
+# most recent version.
+#apt-get install --no-install-recommends -y apt-transport-https gnupg software-properties-common
+#wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+#apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
+#apt-get update
+#apt-get upgrade -y
+
 # We install setuptools and wheel on their own, otherwise the dependencies
 # aren't resolved correctly and pip install fails
 # setuptools is set to version <58 because the newer versions do not support
@@ -99,29 +108,6 @@ rm -rf /var/lib/apt/lists/*
 # Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
 # eventually, see also https://github.com/sudo-project/sudo/issues/42
 echo "Set disable_coredump false" >> /etc/sudo.conf
-
-# The repository version of cmake was updated to 3.18, so at this point in time
-# we have no need to install it manually. We keep this code commented here for
-# future use when we need to install a cmake version not available in the
-# repositories.
-#
-# wget https://cmake.org/files/v3.17/cmake-3.17.3-Linux-x86_64.sh -O /tmp/cmake.sh
-#
-# if ! echo "1a99f573512793224991d24ad49283f017fa544524d8513667ea3cb89cbe368b /tmp/cmake.sh" | sha256sum -c -; then
-#      echo "Hash failed"
-#      exit 1
-# fi
-#
-# # Install the downloaded CMake version in /opt and symlink the binaries to /usr/local/bin
-# mkdir /opt/cmake
-# sh /tmp/cmake.sh --prefix=/opt/cmake --skip-license
-# ln -s /opt/cmake/bin/cmake     /usr/local/bin/cmake
-# ln -s /opt/cmake/bin/ccmake    /usr/local/bin/ccmake
-# ln -s /opt/cmake/bin/cmake-gui /usr/local/bin/cmake-gui
-# ln -s /opt/cmake/bin/cpack     /usr/local/bin/cpack
-# ln -s /opt/cmake/bin/ctest     /usr/local/bin/ctest
-#
-# rm /tmp/cmake.sh
 
 # build gtest
 cmake -S /usr/src/gtest -B /tmp/build-gtest -G Ninja
