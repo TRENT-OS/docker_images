@@ -1,4 +1,4 @@
-#!/bin/bash -ue
+#!/bin/bash -uex
 
 #-------------------------------------------------------------------------------
 #
@@ -92,7 +92,7 @@ function create_docker_image()
 #-------------------------------------------------------------------------------
 
 case "${1:-}" in
-    trentos_build|trentos_analysis|trentos_test|bob )
+    trentos_build|trentos_analysis|trentos_test|bob|ubuntu_jammy )
         create_docker_image $1 ${TODAY_TAG}
         ;;
 
