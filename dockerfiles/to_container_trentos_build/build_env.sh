@@ -104,5 +104,8 @@ chmod 4755 /usr/local/bin/fixuid
 mkdir -p /etc/fixuid
 printf "user: ${USER_NAME}\ngroup: ${USER_NAME}\npaths: \n- /home/${USER_NAME}\n- /tmp\n" > /etc/fixuid/config.yml
 
-# gtest
-cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
+# build gtest
+cmake -S /usr/src/gtest -B /tmp/build-gtest -G Ninja
+ninja -C /tmp/build-gtest
+cp -v /tmp/build-gtest/lib/*.a /usr/lib/
+rm -r /tmp/build-gtest

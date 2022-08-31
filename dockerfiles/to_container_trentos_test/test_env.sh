@@ -109,8 +109,11 @@ DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y /tmp/r
 rm /tmp/riscv.deb
 echo 'export PATH="/opt/hc/riscv-toolchain/bin:$PATH"' >> /home/user/.bashrc
 
-# gtest
-cd /usr/src/gtest && cmake CMakeLists.txt && make && cp lib/*.a /usr/lib
+# build gtest
+cmake -S /usr/src/gtest -B /tmp/build-gtest -G Ninja
+ninja -C /tmp/build-gtest
+cp -v /tmp/build-gtest/lib/*.a /usr/lib/
+rm -r /tmp/build-gtest
 
 # Set capabilities, so the tools can run as normal user also and no "sudo" is
 # required. However, this requires the container is started with the params
