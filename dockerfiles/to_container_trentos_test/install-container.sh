@@ -105,24 +105,6 @@ apt-get clean autoclean
 apt-get autoremove --yes --purge
 rm -rf /var/lib/apt/lists/*
 
-# patched qemu downloaded from internal server
-wget --no-check-certificate https://hc-artefact/release/qemu/hc-qemu_1-20203731653_amd64.deb -O /tmp/qemu.deb
-if ! echo "77278942c0b0d31a9b621d8258b396ef060d947e8fd4eef342c91de5b0e4aebf /tmp/qemu.deb" | sha256sum -c -; then
-     echo "Hash failed"
-     exit 1
-fi
-apt-get install --no-install-recommends -y /tmp/qemu.deb
-rm /tmp/qemu.deb
-
-# patched qemu 6.0 downloaded from internal server
-wget --no-check-certificate https://hc-artefact/release/qemu/hc-qemu-6.0.0_1-20213411106_amd64.deb -O /tmp/qemu.deb
-if ! echo "7496a70c50fe9109392a3dd5c632b8182589366d53dcff786a6478e09ab474db /tmp/qemu.deb" | sha256sum -c -; then
-     echo "Hash failed"
-     exit 1
-fi
-apt-get install --no-install-recommends -y /tmp/qemu.deb
-rm /tmp/qemu.deb
-
 # build gtest
 cmake -S /usr/src/gtest -B /tmp/build-gtest -G Ninja
 ninja -C /tmp/build-gtest
