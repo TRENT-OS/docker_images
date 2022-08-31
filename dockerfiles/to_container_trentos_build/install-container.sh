@@ -30,26 +30,26 @@ ln -s /etc/stack/ /home/${USER_NAME}/.stack
 echo 'export PATH=/scripts/repo:$PATH' >> /home/${USER_NAME}/.bashrc
 
 PACKAGES=(
-    ca-certificates
-    coreutils
-    rsync
-    bzip2
-    xz-utils
-    wget
-    curl
+    #ca-certificates
+    #coreutils
+    #rsync
+    #bzip2
+    #xz-utils
+    #wget
+    #curl
     nano
     mc
     # build tools
-    build-essential
-    git
-    cmake
-    ninja-build
-    astyle
+    #build-essential
+    #git
+    #cmake
+    #ninja-build
+    #astyle
     clang-tidy
-    doxygen
+    #doxygen
     graphviz
     # python
-    python3
+    #python3
     python-is-python3
     python3-cryptography
     python3-future
@@ -59,7 +59,7 @@ PACKAGES=(
     python3-libarchive-c
     python3-pyelftools
     python3-simpleeval
-    python3-six
+    #python3-six
     python3-sortedcontainers
     # needed for the python cryptography module
     cargo
@@ -71,7 +71,7 @@ PACKAGES=(
     lcov
     libgtest-dev
     # XML processing
-    libxml2
+    #libxml2
     libxml2-dev
 )
 apt-get install --no-install-recommends -y ${PACKAGES[@]}
@@ -87,11 +87,11 @@ apt-get install --no-install-recommends -y ${PACKAGES[@]}
 
 # Install python package that are not available via apt.
 PIP_PACKAGES=(
-    aenum
+    #aenum
     hexrec
-    orderedset
-    plyplus
-    pyfdt
+    #orderedset
+    #plyplus
+    #pyfdt
 )
 pip3 install ${PIP_PACKAGES[@]}
 
