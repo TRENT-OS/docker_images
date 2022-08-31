@@ -1,4 +1,4 @@
-FROM trustworthysystems/camkes-riscv
+FROM trustworthysystems/camkes
 
 LABEL MAINTAINER="info@hensoldt-cyber.com"
 LABEL ORGANISATION="HENSOLDT Cyber GmbH"

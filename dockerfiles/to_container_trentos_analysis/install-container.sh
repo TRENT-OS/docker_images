@@ -24,7 +24,7 @@ PACKAGES=(
     sshfs
     openjdk-11-jre-headless
 )
-apt-get install -t bullseye --no-install-recommends --yes ${PACKAGES[@]}
+apt-get install --no-install-recommends --yes ${PACKAGES[@]}
 apt-get clean autoclean
 apt-get autoremove --yes --purge
 
