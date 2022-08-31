@@ -47,7 +47,6 @@ PACKAGES=(
     vde2
     libpcap0.8-dev
     libvdeplug-dev
-    libvdeplug2-dev
     # python, package manager and packages
     python3
     python-is-python3
@@ -88,7 +87,7 @@ apt-get install --no-install-recommends -y ${PACKAGES[@]}
 # install a more recent CMake version
 apt-get install --no-install-recommends -y apt-transport-https gnupg software-properties-common
 wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
-apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
+apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
 apt-get update
 apt-get upgrade -y
 
@@ -109,10 +108,6 @@ pip3 install ${PYTHON_PACKAGES[@]}
 apt-get clean autoclean
 apt-get autoremove --yes --purge
 rm -rf /var/lib/apt/lists/*
-
-# Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
-# eventually, see also https://github.com/sudo-project/sudo/issues/42
-echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # patched qemu downloaded from internal server
 wget --no-check-certificate https://hc-artefact/release/qemu/hc-qemu_1-20203731653_amd64.deb -O /tmp/qemu.deb
@@ -156,5 +151,5 @@ rm -r /tmp/build-gtest
 # fail during the container creation, as the caps are missing when the docker
 # builder run. Maybe it's better to do this in the entrypoint script after a
 # check that the cap are available.
-setcap cap_net_raw,cap_net_admin+eip /usr/bin/python3.8
-setcap cap_net_raw,cap_net_admin+eip /usr/sbin/tcpdump
+setcap cap_net_raw,cap_net_admin+eip /usr/bin/python3.10
+setcap cap_net_raw,cap_net_admin+eip /usr/bin/tcpdump

@@ -42,6 +42,8 @@ ${SCRIPT_DIR}/${SCRIPT_INSTALL_CONTAINER} ${USER_ID} ${USER_NAME}
 
 # now all tools are installed we can set our custom configuration
 mv /etc/mosquitto /etc/mosquitto.org
+mkdir /var/run/mosquitto
+chown mosquitto:mosquitto /var/run/mosquitto
 cp -vr ${SCRIPT_DIR}/demo_iot_mosquitto_config/mosquitto/ /etc/mosquitto/
 cp -v ${SCRIPT_DIR}/nginx/default /etc/nginx/sites-enabled/
 
