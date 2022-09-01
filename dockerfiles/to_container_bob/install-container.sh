@@ -58,7 +58,7 @@ apt-get install -y ${PACKAGES[@]}
 # install a more recent CMake version
 apt-get install --no-install-recommends -y apt-transport-https gnupg software-properties-common
 wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
-apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
+apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
 apt-get update
 apt-get upgrade -y
 
@@ -66,7 +66,3 @@ apt-get upgrade -y
 apt-get clean autoclean
 apt-get autoremove --yes --purge
 rm -rf /var/lib/apt/lists/*
-
-# Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
-# eventually, see also https://github.com/sudo-project/sudo/issues/42
-echo "Set disable_coredump false" >> /etc/sudo.conf
