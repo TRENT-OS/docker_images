@@ -1,3 +1,6 @@
 [submodule "dockerfiles/sel4-camkes-l4v-dockerfiles"]
 	path = dockerfiles/sel4-camkes-l4v-dockerfiles
 	url = ../../ext/sel4-camkes-l4v-dockerfiles.git
+[submodule "dev-scripts"]
+	path = dev-scripts
+	url = ../../ssdk/dev-scripts.git
