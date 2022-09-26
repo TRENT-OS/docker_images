@@ -87,13 +87,6 @@ PACKAGES=(
 )
 apt-get install --no-install-recommends -y ${PACKAGES[@]}
 
-# install a more recent CMake version
-apt-get install --no-install-recommends -y apt-transport-https gnupg software-properties-common
-wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
-apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
-apt-get update
-apt-get upgrade -y
-
 # install python package that are not available via apt
 PYTHON_PACKAGES=(
     fabric
