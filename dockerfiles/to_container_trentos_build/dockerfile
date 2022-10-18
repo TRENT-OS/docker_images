@@ -14,7 +14,7 @@ RUN cd /tmp/install-scripts \
     && ./install-script.sh ${USER_ID} ${USER_NAME} \
     && rm -rf /tmp/install-scripts /var/tmp/*
 
-USER ${USER_NAME}:${USER_NAME}
+USER ${USER_NAME}
 
 ENTRYPOINT ["/entrypoint.sh"]
 
