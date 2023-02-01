@@ -31,6 +31,7 @@ PACKAGES=(
     wget
     curl
     picocom
+    lrzsz
     nano
     mc
     # network tools
