@@ -61,8 +61,10 @@ function build_docker_image()
     echo "Building ${IMAGE_ID} ..."
     local DOCKER_BUILD_PARMAS=(
         build
+        --progress plain
+        --platform linux/amd64  # linux/arm64, linux/arm/v7, linux/riscv64
+        --no-cache
         -t ${IMAGE_ID}
-        --no-cache=true
         --build-arg USER_NAME="user"
         --build-arg USER_ID=1000
         -f ${BASE_DIR}/dockerfile
