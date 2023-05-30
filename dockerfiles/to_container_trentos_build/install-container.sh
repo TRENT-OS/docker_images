@@ -51,16 +51,6 @@ PACKAGES=(
     # python
     #python3
     python-is-python3
-    python3-cryptography
-    python3-future
-    python3-git
-    python3-jinja2
-    python3-jsonschema
-    python3-libarchive-c
-    python3-pyelftools
-    python3-simpleeval
-    #python3-six
-    python3-sortedcontainers
     # needed for the python cryptography module
     cargo
     rustc
@@ -88,10 +78,20 @@ apt-get install --no-install-recommends -y ${PACKAGES[@]}
 # Install python package that are not available via apt.
 PIP_PACKAGES=(
     #aenum
+    cryptography
+    #future
+    GitPython
     hexrec
+    #libarchive-c
+    #jinja2
+    #jsonschema
     #orderedset
     #plyplus
+    #pyelftools
     #pyfdt
+    simpleeval
+    #six
+    #sortedcontainers
 )
 pip3 install ${PIP_PACKAGES[@]}
 

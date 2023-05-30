@@ -53,11 +53,6 @@ PACKAGES=(
     python-is-python3
     python3-pip
     python3-venv
-    python3-fabric
-    python3-git
-    python3-scapy
-    python3-pytest
-    python3-pytest-benchmark
     # build tools
     build-essential
     git
@@ -99,9 +94,14 @@ apt-get upgrade -y
 
 # install python package that are not available via apt
 PYTHON_PACKAGES=(
+    fabric
+    GitPython
+    pytest
+    pytest-benchmark
     pytest-dependency
     pytest-repeat
     pytest-testconfig
+    scapy
 )
 pip3 install ${PYTHON_PACKAGES[@]}
 
@@ -113,10 +113,6 @@ rm -rf /var/lib/apt/lists/*
 # Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
 # eventually, see also https://github.com/sudo-project/sudo/issues/42
 echo "Set disable_coredump false" >> /etc/sudo.conf
-
-# provide /usr/bin/pytest for compatibility reasons, it used to exists in older
-# Ubuntu versions.
-ln -s /usr/bin/pytest-3 /usr/bin/pytest
 
 # patched qemu downloaded from internal server
 wget --no-check-certificate https://hc-artefact/release/qemu/hc-qemu_1-20203731653_amd64.deb -O /tmp/qemu.deb
