@@ -74,7 +74,7 @@ PACKAGES=(
     libxml2
     libxml2-dev
 )
-apt-get install -t bullseye --no-install-recommends -y ${PACKAGES[@]}
+apt-get install --no-install-recommends -y ${PACKAGES[@]}
 
 # The base container has 3.18, so at this point in time we have no need to
 # install a more recent version. However, the lines below can be used to get the
@@ -85,13 +85,7 @@ apt-get install -t bullseye --no-install-recommends -y ${PACKAGES[@]}
 #apt-get update
 #apt-get upgrade -y
 
-# Install python package that are not available via apt. The packages setuptools and wheel on their own, otherwise the dependencies
-# aren't resolved correctly and pip install fails
-# setuptools is set to version <58 because the newer versions do not support
-# 2to3: https://setuptools.readthedocs.io/en/latest/history.html#v58-0-0 which
-# breaks the container build.
-pip3 install 'setuptools<58'
-pip3 install wheel
+# Install python package that are not available via apt.
 PIP_PACKAGES=(
     aenum
     hexrec
