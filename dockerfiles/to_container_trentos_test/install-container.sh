@@ -76,8 +76,11 @@ PACKAGES=(
     libxml2-dev
     libxml2
     # QEMU
+    qemu-system-x86
     qemu-system-arm
-    qemu-system-riscv64
+    qemu-system-misc # qemu-system-riscv64 is just an alias
+    ipxe-qemu # also comes with qemu-system-x86
+    libcapstone-dev # needed for QEMU v7.1 disassembling feature
     # Test and Demo tools
     mosquitto
     nginx
