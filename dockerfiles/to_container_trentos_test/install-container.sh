@@ -67,6 +67,9 @@ PACKAGES=(
     clang-tidy
     doxygen
     graphviz
+    # device tree utils
+    libfdt-dev
+    device-tree-compiler
     # image creation tools
     dosfstools
     mtools
