@@ -50,7 +50,7 @@ PACKAGES=(
     graphviz
     # python
     #python3
-    python-is-python3
+    #python-is-python3
     # needed for the python cryptography module
     cargo
     rustc
