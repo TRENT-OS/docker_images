@@ -1,4 +1,4 @@
-FROM trentos_build:20210503 as builder
+FROM trentos_build:20230531 as builder
 ARG USER_NAME
 ARG USER_ID
 # Copy archive contents into container and run installer script.
