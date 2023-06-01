@@ -1,21 +1,19 @@
-FROM trustworthysystems/camkes:2023_05_26
-
-LABEL MAINTAINER="info@hensoldt-cyber.com"
-LABEL ORGANISATION="HENSOLDT Cyber GmbH"
-
+FROM trustworthysystems/camkes:2023_05_26 as builder
 ARG USER_NAME
 ARG USER_ID
-
 # Copy archive contents into container and run installer script.
+ADD install-package.tgz /tmp/install-scripts/
+RUN cd /tmp/install-scripts && ./install-script.sh ${USER_ID} ${USER_NAME}
 # trustworthysystems/camkes has scripts in /tmp, so we can't remove all content
 # there as a clean-up step.
-ADD install-package.tgz /tmp/install-scripts/
-RUN cd /tmp/install-scripts \
-    && ./install-script.sh ${USER_ID} ${USER_NAME} \
-    && rm -rf /tmp/install-scripts /var/tmp/*
+RUN rm -rf /tmp/install-scripts /var/tmp/*
 
+#-------------------------------------------------------------------------------
+FROM scratch
+ARG USER_NAME
+LABEL MAINTAINER="info@hensoldt-cyber.com"
+LABEL ORGANISATION="HENSOLDT Cyber GmbH"
+COPY --from=builder / /
 USER ${USER_NAME}
-
 ENTRYPOINT ["/entrypoint.sh"]
-
 CMD ["bash"]
