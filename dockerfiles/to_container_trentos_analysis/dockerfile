@@ -1,4 +1,4 @@
-FROM trentos_build:20210503
+FROM trentos_build:20230615 as builder
 
 LABEL MAINTAINER="info@hensoldt-cyber.com"
 LABEL ORGANISATION="HENSOLDT Cyber GmbH"
