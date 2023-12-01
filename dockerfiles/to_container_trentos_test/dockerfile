@@ -1,4 +1,17 @@
-FROM ubuntu:focal
+#-------------------------------------------------------------------------------
+# A temporary layer used only for building customized QEMU.
+# Existing QEMU binaries can be imported by replacing following code by
+# FROM --platform=${TARGETPLATFORM} trentos_test:<tag> as qemu_build
+
+FROM ubuntu:focal as qemu_build
+
+ADD install-package.tgz /tmp/install-scripts/
+RUN cd /tmp/install-scripts \
+    && ./install-qemu-build.sh
+
+#-------------------------------------------------------------------------------
+# Main layer used to build the test container.
+FROM ubuntu:focal as trentos_test
 
 LABEL MAINTAINER="info@hensoldt-cyber.com"
 LABEL ORGANISATION="HENSOLDT Cyber GmbH"
@@ -11,6 +24,12 @@ ADD install-package.tgz /tmp/install-scripts/
 RUN cd /tmp/install-scripts \
     && ./install-script.sh ${USER_ID} ${USER_NAME} \
     && rm -rf /tmp/* /var/tmp/*
+
+# Copy custom QEMU-build.
+# Existing QEMU binaries can be imported from the trentos_build base-layer by:
+# COPY --from=qemu_build /opt/hc/bin /opt/hc/bin
+COPY --from=qemu_build /tmp/bin /opt/hc/bin
+ENV PATH="$PATH:/opt/hc/bin"
 
 USER ${USER_NAME}
 

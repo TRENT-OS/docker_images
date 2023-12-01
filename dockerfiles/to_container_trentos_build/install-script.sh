@@ -14,6 +14,7 @@ if [ ${1:-} == "--build-package" ]; then
         # installation scripts
         -C ${SCRIPT_DIR}/../install-scripts
         install-fixuid.sh
+        install-qemu-build.sh
         -C ${SCRIPT_DIR}
         install-script.sh
         ${SCRIPT_INSTALL_CONTAINER}

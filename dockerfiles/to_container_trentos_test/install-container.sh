@@ -76,9 +76,6 @@ PACKAGES=(
     # XML processing
     libxml2-dev
     libxml2
-    # QEMU
-    qemu-system-arm
-    qemu-system-riscv64
     # Test and Demo tools
     mosquitto
     nginx
@@ -113,34 +110,6 @@ rm -rf /var/lib/apt/lists/*
 # Fix for a sudo error when running in a container, it is fixed in v1.8.31p1
 # eventually, see also https://github.com/sudo-project/sudo/issues/42
 echo "Set disable_coredump false" >> /etc/sudo.conf
-
-# patched qemu downloaded from internal server
-wget --no-check-certificate https://hc-artefact/release/qemu/hc-qemu_1-20203731653_amd64.deb -O /tmp/qemu.deb
-if ! echo "77278942c0b0d31a9b621d8258b396ef060d947e8fd4eef342c91de5b0e4aebf /tmp/qemu.deb" | sha256sum -c -; then
-     echo "Hash failed"
-     exit 1
-fi
-apt-get install --no-install-recommends -y /tmp/qemu.deb
-rm /tmp/qemu.deb
-
-# patched qemu 6.0 downloaded from internal server
-wget --no-check-certificate https://hc-artefact/release/qemu/hc-qemu-6.0.0_1-20213411106_amd64.deb -O /tmp/qemu.deb
-if ! echo "7496a70c50fe9109392a3dd5c632b8182589366d53dcff786a6478e09ab474db /tmp/qemu.deb" | sha256sum -c -; then
-     echo "Hash failed"
-     exit 1
-fi
-apt-get install --no-install-recommends -y /tmp/qemu.deb
-rm /tmp/qemu.deb
-
-# riscv toolchain downloaded from internal server
-wget --no-check-certificate https://hc-artefact/release/riscv-gnu-toolchain/hc-riscv-gnu-toolchain_1-20213311845_amd64.deb -O /tmp/riscv.deb
-if ! echo "87a43ca5b1cdc3b47e4ee85fa9522f3bb56a30f8bcafc4884f1d0f75b8699b4c /tmp/riscv.deb" | sha256sum -c -; then
-     echo "Hash failed"
-     exit 1
-fi
-apt-get install --no-install-recommends -y /tmp/riscv.deb
-rm /tmp/riscv.deb
-echo 'export PATH="/opt/hc/riscv-toolchain/bin:$PATH"' >> /home/user/.bashrc
 
 # build gtest
 cmake -S /usr/src/gtest -B /tmp/build-gtest -G Ninja
