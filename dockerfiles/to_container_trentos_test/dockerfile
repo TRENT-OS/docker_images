@@ -3,7 +3,7 @@
 # Existing QEMU binaries can be imported by replacing following code by
 # FROM --platform=${TARGETPLATFORM} trentos_test:<tag> as qemu_build
 
-FROM ubuntu:focal as qemu_build
+FROM --platform=${TARGETPLATFORM} ubuntu:focal as qemu_build
 
 ADD install-package.tgz /tmp/install-scripts/
 RUN cd /tmp/install-scripts \
@@ -11,7 +11,7 @@ RUN cd /tmp/install-scripts \
 
 #-------------------------------------------------------------------------------
 # Main layer used to build the test container.
-FROM ubuntu:focal as trentos_test
+FROM --platform=${TARGETPLATFORM} ubuntu:focal as trentos_test
 
 LABEL MAINTAINER="info@hensoldt-cyber.com"
 LABEL ORGANISATION="HENSOLDT Cyber GmbH"

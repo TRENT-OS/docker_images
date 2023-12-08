@@ -17,8 +17,13 @@ function push_docker_image()
 {
     local IMAGE_NAME=$1
     local IMAGE_TAG=$2
+    local ARCH=$3
 
     local IMAGE_ID=${IMAGE_NAME}:${IMAGE_TAG}
+
+    if [ ${ARCH} != "amd64" ]; then
+        IMAGE_ID+="_${ARCH}"
+    fi
 
     echo "Pushing image to ${REGISTRY}/${IMAGE_ID}"
     docker tag ${IMAGE_ID} ${REGISTRY}/${IMAGE_ID}
@@ -32,9 +37,15 @@ function export_docker_image()
 {
     local IMAGE_NAME=$1
     local IMAGE_TAG=$2
+    local ARCH=$3
 
     local IMAGE_ID=${IMAGE_NAME}:${IMAGE_TAG}
     local IMAGE_ARCHIVE=${IMAGE_NAME}_${IMAGE_TAG}
+
+    if [ ${ARCH} != "amd64" ]; then
+        IMAGE_ID+="_${ARCH}"
+        IMAGE_ARCHIVE+="_${ARCH}"
+    fi
 
     echo "saving image to ${IMAGE_ARCHIVE}"
     IMG_SIZE=$(docker save ${IMAGE_ID} | wc -c | numfmt --to=iec-i)
@@ -48,9 +59,23 @@ function build_docker_image()
 {
     local IMAGE_NAME=$1
     local IMAGE_TAG=$2
+    local ARCH=$3
 
     local IMAGE_ID=${IMAGE_NAME}:${IMAGE_TAG}
     local BASE_DIR="${BUILD_SCRIPT_DIR}/to_container_${IMAGE_NAME}"
+
+    if [ ${ARCH} != "amd64" ]; then
+        IMAGE_ID+="_${ARCH}"
+    fi
+
+    case "${3:-}" in
+        "amd64" )
+            PLATFORM="linux/amd64"
+            ;;
+        "arm64" )
+            PLATFORM="linux/arm64"
+            ;;
+    esac
 
     # There might be a script that creates an installer package
     local INSTALLER="${BASE_DIR}/install-script.sh"
@@ -60,9 +85,9 @@ function build_docker_image()
 
     echo "Building ${IMAGE_ID} ..."
     local DOCKER_BUILD_PARMAS=(
-        build
+        buildx build
         --progress plain
-        --platform linux/amd64  # linux/arm64, linux/arm/v7, linux/riscv64
+        --platform ${PLATFORM}
         --no-cache
         -t ${IMAGE_ID}
         --build-arg USER_NAME="user"
@@ -78,12 +103,13 @@ function create_docker_image()
 {
     local IMAGE_NAME=$1
     local IMAGE_TAG=$2
+    local ARCH=$3
 
-    local BUILD_DIR="build_${IMAGE_NAME}_$(date --utc +'%Y%m%d%H%M%S')"
+    local BUILD_DIR="build_${IMAGE_NAME}_${ARCH}_$(date --utc +'%Y%m%d%H%M%S')"
     mkdir -p ${BUILD_DIR}
     (
         cd ${BUILD_DIR}
-        build_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
+        build_docker_image ${IMAGE_NAME} ${IMAGE_TAG} ${ARCH}
         #export_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
         #push_docker_image ${IMAGE_NAME} ${IMAGE_TAG}
     )
@@ -95,25 +121,31 @@ function create_docker_image()
 
 case "${1:-}" in
     trentos_build|trentos_analysis|trentos_test|bob )
-        create_docker_image $1 ${TODAY_TAG}
+        create_docker_image $1 ${TODAY_TAG} ${2:-"amd64"}
         ;;
 
     "all" )
-        create_docker_image trentos_build ${TODAY_TAG}
-        create_docker_image trentos_analysis ${TODAY_TAG}
-        create_docker_image trentos_test ${TODAY_TAG}
-        create_docker_image bob ${TODAY_TAG}
+        create_docker_image trentos_build ${TODAY_TAG} ${2:-"amd64"}
+        create_docker_image trentos_analysis ${TODAY_TAG} ${2:-"amd64"}
+        create_docker_image trentos_test ${TODAY_TAG} ${2:-"amd64"}
+        create_docker_image bob ${TODAY_TAG} ${2:-"amd64"}
         ;;
 
     * )
-        echo -e "Usage: build.sh <target>\n" \
+        echo -e "Usage: build.sh <target> <architecure>\n" \
                 "\n" \
                 "  possible targets are:\n" \
                 "    trentos_build\n" \
                 "    trentos_analysis\n" \
                 "    trentos_test\n" \
                 "    bob\n" \
-                "    all\n"
+                "    all\n" \
+                "  [OPTIONAL] possible architectures are:\n" \
+                "    amd64 - default\n" \
+                "    arm64\n" \
+                "\n" \
+                "To prevent cross-compile errors run:\n" \
+                "docker run --rm --privileged multiarch/qemu-user-static --reset -p yes"
         exit 1
         ;;
 esac
