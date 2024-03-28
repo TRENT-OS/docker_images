@@ -107,6 +107,9 @@ PYTHON_PACKAGES=(
     pytest-repeat
     pytest-testconfig
     scapy
+    pyftdi
+    pyusb
+    pyserial
 )
 pip3 install ${PYTHON_PACKAGES[@]}
 
