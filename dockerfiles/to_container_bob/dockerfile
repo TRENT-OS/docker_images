@@ -1,6 +1,6 @@
 FROM ubuntu:focal
 
-LABEL MAINTAINER="info@hensoldt-cyber.com"
+LABEL MAINTAINER="info.cyber@hensoldt.net"
 LABEL ORGANISATION="HENSOLDT Cyber GmbH"
 
 ARG USER_NAME
