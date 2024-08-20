@@ -110,6 +110,7 @@ PYTHON_PACKAGES=(
     pyftdi
     pyusb
     pyserial
+	websocket-client
 )
 pip3 install ${PYTHON_PACKAGES[@]}
 
